@@ -1,0 +1,44 @@
+---
+import { whatsappUrl } from '../lib/format';
+import Icon from './Icon.astro';
+---
+
+<a
+  data-whatsapp-flotante
+  href={whatsappUrl()}
+  target="_blank"
+  rel="noopener"
+  aria-label="Escribinos por WhatsApp"
+  class="fixed right-4 bottom-4 z-60 flex size-[58px] items-center justify-center rounded-full bg-whatsapp text-white shadow-float transition-[opacity,scale] duration-200 hover:brightness-95 data-oculto:pointer-events-none data-oculto:scale-80 data-oculto:opacity-0"
+>
+  <Icon name="whatsapp" size={30} />
+</a>
+
+<script>
+  // En celular se esconde mientras la grilla de productos está en pantalla,
+  // para no tapar los botones "Lo quiero" de las tarjetas.
+  const boton = document.querySelector<HTMLAnchorElement>('[data-whatsapp-flotante]');
+  const grilla = document.querySelector<HTMLElement>('[data-catalogo-grilla]');
+  const celular = window.matchMedia('(max-width: 767px)');
+  let grillaVisible = false;
+
+  function actualizar() {
+    if (!boton || !grilla) return;
+    const ocultar = celular.matches && grillaVisible && !grilla.hidden;
+    boton.toggleAttribute('data-oculto', ocultar);
+    boton.inert = ocultar; // tampoco se puede enfocar con el teclado mientras está oculto
+  }
+
+  if (boton && grilla) {
+    new IntersectionObserver(([entrada]) => {
+      grillaVisible = entrada?.isIntersecting ?? false;
+      actualizar();
+    }).observe(grilla);
+    celular.addEventListener('change', actualizar);
+    // El filtro puede vaciar la grilla
+    new MutationObserver(actualizar).observe(grilla, {
+      attributes: true,
+      attributeFilter: ['hidden'],
+    });
+  }
+</script>

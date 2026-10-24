@@ -1,0 +1,24 @@
+---
+import { garantia } from '../data/contenido';
+import Icon from './Icon.astro';
+---
+
+<section class="bg-white">
+  <div class="container-page pt-14 md:pt-18 lg:pt-22">
+    <div class="relative flex items-start gap-5 overflow-hidden rounded-2xl bg-celeste-200 p-6 md:p-10">
+      <div
+        aria-hidden="true"
+        class="absolute -right-[60px] -bottom-20 h-[180px] w-[200px] rounded-[55%_45%_50%_50%] bg-lila-100"
+      ></div>
+      <span class="relative flex size-[52px] shrink-0 items-center justify-center rounded-tile bg-white text-brand">
+        <Icon name="escudo" size={28} strokeWidth={1.8} />
+      </span>
+      <div class="relative max-w-[640px]">
+        <h2 class="mb-2.5 font-display text-2xl leading-tight font-bold md:text-3xl">
+          {garantia.titulo}
+        </h2>
+        <p class="text-base leading-relaxed text-pretty">{garantia.texto}</p>
+      </div>
+    </div>
+  </div>
+</section>

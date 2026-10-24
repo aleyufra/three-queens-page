@@ -1,0 +1,20 @@
+---
+import { beneficios } from '../data/contenido';
+import Icon from './Icon.astro';
+---
+
+<section aria-label="Por qué comprarnos" class="border-b border-line bg-white">
+  <ul class="container-page grid grid-cols-2 gap-3 py-6 md:grid-cols-4">
+    {beneficios.map((b) => (
+      <li class="flex items-start gap-3 rounded-tile bg-celeste-50 p-3.5">
+        <span class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-celeste-200 text-brand">
+          <Icon name={b.icono} size={22} strokeWidth={1.8} />
+        </span>
+        <div>
+          <p class="text-[15px] leading-tight font-semibold">{b.titulo}</p>
+          <p class="mt-0.5 text-sm leading-snug text-muted">{b.texto}</p>
+        </div>
+      </li>
+    ))}
+  </ul>
+</section>

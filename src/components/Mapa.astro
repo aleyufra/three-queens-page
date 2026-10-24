@@ -1,0 +1,49 @@
+---
+import { site } from '../data/site';
+import { horariosTexto, whatsappUrl } from '../lib/format';
+import Boton from './Boton.astro';
+import Icon from './Icon.astro';
+
+// Embed de Google Maps sin API key: se arma con la búsqueda y el zoom de site.ts
+const mapaSrc = `https://maps.google.com/maps?q=${encodeURIComponent(site.mapa.busqueda)}&z=${site.mapa.zoom}&output=embed`;
+---
+
+<section id="zona" class="bg-celeste-50">
+  <div class="container-page py-14 md:py-18 lg:py-22">
+    <h2 class="mb-6 font-display text-2xl leading-tight font-bold md:text-3xl">Dónde entregamos</h2>
+
+    <div class="grid gap-5 md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+      <iframe
+        src={mapaSrc}
+        title="Mapa de la zona de entrega: Palpalá y barrio General Savio"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        class="h-60 w-full rounded-2xl border border-celeste-200 bg-celeste-100 md:h-full md:min-h-[340px]"
+      ></iframe>
+
+      <div class="flex flex-col gap-[18px] rounded-2xl bg-white p-6 shadow-card">
+        <div class="flex items-start gap-3">
+          <span class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-celeste-200 text-brand">
+            <Icon name="pin" size={22} strokeWidth={1.8} />
+          </span>
+          <div>
+            <p class="text-sm text-muted">Zona de entrega</p>
+            <p class="font-display text-lg font-semibold">{site.entrega}</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-celeste-200 text-brand">
+            <Icon name="reloj" size={22} strokeWidth={1.8} />
+          </span>
+          <div>
+            <p class="text-sm text-muted">Horarios</p>
+            <p class="text-base leading-normal font-semibold">{horariosTexto}</p>
+          </div>
+        </div>
+        <Boton href={whatsappUrl()} tamano="lg" whatsapp class="mt-auto">
+          Consultá el punto de encuentro
+        </Boton>
+      </div>
+    </div>
+  </div>
+</section>

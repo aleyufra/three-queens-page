@@ -1,0 +1,105 @@
+---
+import { categorias, products, type Categoria } from '../data/products';
+import { whatsappUrl } from '../lib/format';
+import Boton from './Boton.astro';
+import Icon from './Icon.astro';
+import ProductCard from './ProductCard.astro';
+
+const filtros: { valor: 'todos' | Categoria; nombre: string }[] = [
+  { valor: 'todos', nombre: 'Todos' },
+  ...(Object.keys(categorias) as Categoria[]).map((c) => ({
+    valor: c,
+    nombre: categorias[c].nombre,
+  })),
+];
+---
+
+<section id="catalogo" class="bg-white">
+  <div class="container-page py-14 md:py-18 lg:py-22">
+    <h2 class="mb-2 font-display text-2xl leading-tight font-bold md:text-3xl">Nuestro catálogo</h2>
+    <p class="mb-5 max-w-[560px] text-base leading-normal text-pretty text-muted">
+      Fotos reales y medidas exactas de cada par. Consultá stock y talles por WhatsApp.
+    </p>
+
+    <!-- Filtro: sin JavaScript se ven todos los productos -->
+    <div
+      role="group"
+      aria-label="Filtrar por categoría"
+      class="-mx-4 mb-6 flex gap-2 overflow-x-auto px-4 pt-1 pb-2.5 [scrollbar-width:none] md:-mx-8 md:px-8 lg:-mx-10 lg:px-10"
+    >
+      {filtros.map((f) => (
+        <button
+          type="button"
+          data-filtro={f.valor}
+          aria-pressed={f.valor === 'todos' ? 'true' : 'false'}
+          class="group relative min-h-11 shrink-0 cursor-pointer rounded-full bg-celeste-200 px-[18px] text-[15px] font-semibold text-navy transition-colors duration-200 hover:brightness-95 active:scale-[0.96] aria-pressed:bg-brand aria-pressed:text-white"
+        >
+          {f.nombre}
+          <span
+            aria-hidden="true"
+            class="absolute bottom-1.5 left-1/2 size-1.5 -translate-x-1/2 rounded-full bg-lila-400 opacity-0 group-aria-pressed:opacity-100"
+          />
+        </button>
+      ))}
+    </div>
+
+    <p data-catalogo-estado aria-live="polite" class="sr-only"></p>
+
+    <ul data-catalogo-grilla class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
+      {products.map((p) => (
+        <li data-categoria={p.categoria}>
+          <ProductCard product={p} />
+        </li>
+      ))}
+    </ul>
+
+    <div
+      data-catalogo-vacio
+      hidden
+      class="flex flex-col items-center gap-4 rounded-2xl border border-dashed border-celeste-200 bg-celeste-50 px-5 py-12 text-center"
+    >
+      <span class="flex size-16 items-center justify-center rounded-full bg-lila-100 text-brand">
+        <Icon name="zapato" size={32} strokeWidth={1.5} />
+      </span>
+      <p class="max-w-[380px] text-base leading-normal text-pretty">
+        No hay modelos en esta categoría por ahora. Escribinos y te contamos qué llega.
+      </p>
+      <Boton href={whatsappUrl()} whatsapp>
+        Escribinos
+      </Boton>
+    </div>
+
+    <div class="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-lila-100 p-5">
+      <p class="max-w-[520px] text-base leading-normal font-medium">
+        ¿No encontrás tu talle o modelo? Tenemos más variedad. Escribinos.
+      </p>
+      <Boton href={whatsappUrl()} whatsapp>
+        Escribir por WhatsApp
+      </Boton>
+    </div>
+  </div>
+</section>
+
+<script>
+  const botones = document.querySelectorAll<HTMLButtonElement>('[data-filtro]');
+  const items = document.querySelectorAll<HTMLElement>('[data-categoria]');
+  const grilla = document.querySelector<HTMLElement>('[data-catalogo-grilla]');
+  const vacio = document.querySelector<HTMLElement>('[data-catalogo-vacio]');
+  const estado = document.querySelector<HTMLElement>('[data-catalogo-estado]');
+
+  function filtrar(filtro: string) {
+    let visibles = 0;
+    items.forEach((item) => {
+      const mostrar = filtro === 'todos' || item.dataset.categoria === filtro;
+      item.hidden = !mostrar;
+      if (mostrar) visibles++;
+    });
+    botones.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filtro === filtro)));
+    if (grilla) grilla.hidden = visibles === 0;
+    if (vacio) vacio.hidden = visibles !== 0;
+    // Lo anuncia el lector de pantalla
+    if (estado) estado.textContent = `${visibles} ${visibles === 1 ? 'modelo' : 'modelos'}`;
+  }
+
+  botones.forEach((b) => b.addEventListener('click', () => filtrar(b.dataset.filtro ?? 'todos')));
+</script>

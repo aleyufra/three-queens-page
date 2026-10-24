@@ -1,0 +1,78 @@
+@import 'tailwindcss';
+
+/*
+ * Tokens de marca. Cada variable genera utilidades de Tailwind:
+ * --color-brand → bg-brand, text-brand, border-brand…
+ */
+@theme {
+  /* Azules */
+  --color-navy: #0b1f44; /* texto principal y títulos */
+  --color-brand: #0d47a1; /* botones, links, footer */
+
+  /* Celestes pastel */
+  --color-celeste-50: #eef8fd; /* fondos de secciones */
+  --color-celeste-100: #e1f2fb;
+  --color-celeste-200: #bde4f7; /* chips, íconos, bloque de garantía */
+
+  /* Lila (acento tomado del logo) */
+  --color-lila-100: #f1e6fd;
+  --color-lila-400: #b983f2;
+
+  /* Neutros */
+  --color-line: #e3eef6; /* bordes */
+  --color-muted: #5b6478; /* texto secundario */
+  --color-footer-muted: #d6e4f5;
+  --color-footer-line: #23375f;
+
+  /* Verde WhatsApp oscurecido para que el ícono blanco tenga contraste suficiente */
+  --color-whatsapp: #128c7e;
+
+  --radius-tile: 0.875rem; /* 14px */
+
+  --shadow-card: 0 2px 10px rgb(11 31 68 / 0.05);
+  --shadow-card-hover: 0 8px 24px rgb(11 31 68 / 0.1);
+  --shadow-logo: 0 12px 32px rgb(11 31 68 / 0.12);
+  --shadow-float: 0 6px 18px rgb(11 31 68 / 0.25);
+}
+
+/* `inline` porque estas variables apuntan a las que genera la API de fuentes de Astro. */
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-poppins);
+}
+
+/* Contenedor centrado de 1200px con margen lateral de 16 / 32 / 40px. */
+@utility container-page {
+  width: 100%;
+  max-width: 75rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  @media (width >= 48rem) {
+    padding-inline: 2rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 2.5rem;
+  }
+}
+
+@layer base {
+  html {
+    @media (prefers-reduced-motion: no-preference) {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    @apply bg-white font-sans text-navy antialiased;
+  }
+
+  /* Deja lugar para el header fijo al saltar a una sección. */
+  section[id] {
+    scroll-margin-top: 4.5rem;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+}

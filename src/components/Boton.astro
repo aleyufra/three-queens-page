@@ -1,0 +1,41 @@
+---
+// Botón-link reutilizable. Los links a WhatsApp se abren en otra pestaña.
+import Icon from './Icon.astro';
+
+interface Props {
+  href: string;
+  variante?: 'primario' | 'secundario';
+  tamano?: 'md' | 'lg';
+  whatsapp?: boolean;
+  class?: string;
+  'aria-label'?: string;
+}
+
+const {
+  href,
+  variante = 'primario',
+  tamano = 'md',
+  whatsapp = false,
+  class: className,
+  ...rest
+} = Astro.props;
+const externo = href.startsWith('http');
+---
+
+<a
+  href={href}
+  target={externo ? '_blank' : undefined}
+  rel={externo ? 'noopener' : undefined}
+  class:list={[
+    'inline-flex items-center justify-center gap-2 rounded-xl px-5 font-semibold no-underline transition-[background-color,scale] duration-200 active:scale-[0.97]',
+    tamano === 'md' ? 'min-h-11 text-[15px]' : 'min-h-12 text-base',
+    variante === 'primario'
+      ? 'bg-brand text-white hover:bg-navy'
+      : 'border-2 border-brand bg-white text-brand hover:bg-celeste-200',
+    className,
+  ]}
+  {...rest}
+>
+  {whatsapp && <Icon name="whatsapp" size={18} />}
+  <slot />
+</a>

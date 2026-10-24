@@ -1,0 +1,48 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.jpg';
+import { site } from '../data/site';
+import { whatsappUrl } from '../lib/format';
+import Boton from './Boton.astro';
+---
+
+<section class="relative overflow-hidden bg-celeste-50">
+  <!-- Formas decorativas -->
+  <div
+    aria-hidden="true"
+    class="absolute -top-[90px] -right-[120px] h-[360px] w-[420px] rounded-[58%_42%_55%_45%/50%_60%_40%_50%] bg-lila-100"
+  ></div>
+  <div
+    aria-hidden="true"
+    class="absolute -bottom-[70px] -left-[60px] h-40 w-[180px] rounded-[50%_50%_45%_55%] bg-celeste-200/60"
+  ></div>
+
+  <div class="relative container-page flex items-center justify-between gap-10 py-9 md:py-12 lg:py-14">
+    <div class="max-w-[620px]">
+      <h1 class="mb-3.5 font-display text-3xl leading-[1.15] font-bold text-balance md:text-[2.375rem] lg:text-[2.875rem]">
+        Calzado lindo para toda la familia
+      </h1>
+      <p class="mb-6 max-w-[520px] text-base leading-relaxed text-pretty text-muted md:text-lg">
+        Talle medido en centímetros y entrega en puntos de encuentro en Palpalá. Pagás cuando lo
+        tenés en la mano.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <Boton href="#catalogo" tamano="lg">
+          Ver catálogo
+        </Boton>
+        <Boton href={whatsappUrl()} tamano="lg" variante="secundario" whatsapp>
+          Consultar por WhatsApp
+        </Boton>
+      </div>
+    </div>
+
+    <Image
+      src={logo}
+      alt={`Logo de ${site.nombre}`}
+      width={250}
+      height={250}
+      densities={[1, 2]}
+      class="hidden size-[250px] shrink-0 rounded-full border-[6px] border-white object-cover shadow-logo lg:block"
+    />
+  </div>
+</section>

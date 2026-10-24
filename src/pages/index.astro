@@ -1,0 +1,28 @@
+---
+import Beneficios from '../components/Beneficios.astro';
+import BotonWhatsApp from '../components/BotonWhatsApp.astro';
+import Catalogo from '../components/Catalogo.astro';
+import ComoComprar from '../components/ComoComprar.astro';
+import Footer from '../components/Footer.astro';
+import Garantia from '../components/Garantia.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Mapa from '../components/Mapa.astro';
+import Preguntas from '../components/Preguntas.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout>
+  <Header />
+  <main>
+    <Hero />
+    <Beneficios />
+    <Catalogo />
+    <ComoComprar />
+    <Garantia />
+    <Preguntas />
+    <Mapa />
+  </main>
+  <Footer />
+  <BotonWhatsApp />
+</BaseLayout>

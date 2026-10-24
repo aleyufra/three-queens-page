@@ -1,0 +1,5 @@
+design-ref/
+dist/
+.astro/
+node_modules/
+pnpm-lock.yaml

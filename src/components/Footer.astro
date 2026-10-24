@@ -1,0 +1,71 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.jpg';
+import { site } from '../data/site';
+import { whatsappUrl } from '../lib/format';
+import type { IconName } from '../lib/icons';
+import Icon from './Icon.astro';
+
+// Las redes salen de site.ts: si el link está vacío, no se muestran.
+const redes: { nombre: string; href: string; icono: IconName }[] = [
+  { nombre: 'Facebook', href: site.redes.facebook, icono: 'facebook' },
+  { nombre: 'Instagram', href: site.redes.instagram, icono: 'instagram' },
+];
+
+const links = [
+  {
+    nombre: `WhatsApp: ${site.whatsapp.visible}`,
+    href: whatsappUrl(),
+    icono: 'whatsapp' as IconName,
+  },
+  ...redes.filter((r) => r.href),
+];
+---
+
+<!-- El pb-24 en celular deja lugar para el botón flotante de WhatsApp -->
+<footer class="bg-brand text-white [&_:focus-visible]:outline-white">
+  <div class="container-page grid gap-7 pt-10 pb-24 md:grid-cols-3 md:pb-8">
+    <div class="flex items-center gap-3">
+      <Image
+        src={logo}
+        alt={`Logo de ${site.nombre}`}
+        width={52}
+        height={52}
+        densities={[1, 2]}
+        class="size-[52px] rounded-full object-cover"
+      />
+      <div>
+        <p class="font-display text-[17px] font-semibold">{site.nombre}</p>
+        <p class="text-sm text-footer-muted">{site.localidad}</p>
+      </div>
+    </div>
+
+    <ul class="flex flex-col gap-1.5">
+      {links.map((l) => (
+        <li>
+          <a
+            href={l.href}
+            target="_blank"
+            rel="noopener"
+            class="flex min-h-11 items-center gap-2.5 text-[15px] text-white no-underline hover:text-celeste-200"
+          >
+            <Icon name={l.icono} size={20} />
+            {l.nombre}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="text-[15px] leading-relaxed text-footer-muted">
+      <p class="mb-1 font-semibold text-white">Horarios</p>
+      {site.horarios.map((h) => (
+        <p>{`${h.dias} ${h.horas}`}</p>
+      ))}
+    </div>
+
+    <p class="border-t border-footer-line pt-5 text-sm text-footer-muted md:col-span-3">
+      © {new Date().getFullYear()}
+      {site.nombre}
+    </p>
+  </div>
+</footer>

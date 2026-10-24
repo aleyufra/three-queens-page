@@ -1,0 +1,25 @@
+---
+import { pasos } from '../data/contenido';
+---
+
+<section id="como-comprar" class="bg-celeste-50">
+  <div class="container-page py-14 md:py-18 lg:py-22">
+    <h2 class="mb-6 font-display text-2xl leading-tight font-bold md:text-3xl">Cómo comprar</h2>
+    <ol class="grid gap-4 md:grid-cols-3">
+      {pasos.map((paso, i) => (
+        <li class="flex items-start gap-4 rounded-2xl bg-white p-[22px] shadow-card">
+          <span
+            aria-hidden="true"
+            class="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand font-display text-lg font-bold text-white"
+          >
+            {i + 1}
+          </span>
+          <div>
+            <h3 class="my-1.5 font-display text-lg font-semibold">{paso.titulo}</h3>
+            <p class="text-[15px] leading-normal text-muted">{paso.texto}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

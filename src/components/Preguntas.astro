@@ -1,0 +1,34 @@
+---
+import { preguntas } from '../data/contenido';
+import Icon from './Icon.astro';
+---
+
+<section id="preguntas" class="bg-white">
+  <div class="container-page py-14 md:py-18 lg:py-22">
+    <div class="mx-auto max-w-[740px]">
+      <h2 class="mb-5 font-display text-2xl leading-tight font-bold md:text-3xl">
+        Preguntas frecuentes
+      </h2>
+
+      <!-- <details> abre y cierra solo, sin JavaScript, y es accesible por teclado -->
+      <div class="flex flex-col gap-2.5">
+        {preguntas.map((p) => (
+          <details class="group rounded-tile border border-line bg-white transition-colors duration-200 open:bg-celeste-50">
+            <summary class="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 rounded-tile px-[18px] py-3.5 hover:bg-celeste-50 [&::-webkit-details-marker]:hidden">
+              <h3 class="text-base leading-snug font-semibold">{p.pregunta}</h3>
+              <span
+                aria-hidden="true"
+                class="flex size-7 shrink-0 items-center justify-center rounded-full bg-celeste-200 text-brand transition-transform duration-200 group-open:rotate-45"
+              >
+                <Icon name="mas" size={14} strokeWidth={2.6} />
+              </span>
+            </summary>
+            <p class="px-[18px] pb-[18px] text-[15px] leading-relaxed text-pretty text-muted">
+              {p.respuesta}
+            </p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Poppins:wght@600;700&amp;display=swap" rel="stylesheet">
+<style>
+html{scroll-behavior:smooth}
+body{margin:0;background:#FFFFFF;color:#0B1F44;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#0D47A1}
+a:hover{color:#0B1F44}
+:focus-visible{outline:3px solid #B983F2;outline-offset:2px}
+section{scroll-margin-top:72px}
+</style>
+</helmet>
+
+<header data-component="Header" style="position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.94);backdrop-filter:blur(8px);border-bottom:1px solid #E3EEF6">
+  <div style="max-width:1200px;margin:0 auto;padding:0 {{ px }}px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+    <a href="#" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#0B1F44">
+      <img src="assets/logo.jpg" alt="Logo de Three Queens Calzados" style="width:40px;height:40px;border-radius:50%;object-fit:cover;display:block">
+      <span style="font-family:Poppins,sans-serif;font-weight:700;font-size:18px;color:#0B1F44">Three Queens</span>
+    </a>
+    <div style="display:flex;align-items:center;gap:28px">
+      <sc-if value="{{ showNav }}" hint-placeholder-val="{{ false }}">
+        <nav aria-label="Secciones" style="display:flex;gap:24px">
+          <a href="#catalogo" style="font-size:15px;font-weight:500;color:#0B1F44;text-decoration:none;padding:12px 0" style-hover="color:#0D47A1">Catálogo</a>
+          <a href="#como-comprar" style="font-size:15px;font-weight:500;color:#0B1F44;text-decoration:none;padding:12px 0" style-hover="color:#0D47A1">Cómo comprar</a>
+          <a href="#preguntas" style="font-size:15px;font-weight:500;color:#0B1F44;text-decoration:none;padding:12px 0" style-hover="color:#0D47A1">Preguntas</a>
+          <a href="#zona" style="font-size:15px;font-weight:500;color:#0B1F44;text-decoration:none;padding:12px 0" style-hover="color:#0D47A1">Zona de entrega</a>
+        </nav>
+      </sc-if>
+      <a href="{{ wa }}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:12px;background:#0D47A1;color:#FFFFFF;text-decoration:none;font-weight:600;font-size:15px;transition:background 180ms" style-hover="background:#0B1F44;color:#FFFFFF" style-active="transform:scale(0.97)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.6-4.6A8.6 8.6 0 1 1 7.7 19.6L3 21z"></path><path d="M9.2 9.3c.3 1.7 1.8 3.6 3.6 4.4l1.1-1 1.5.8-.3 1.3c-2.8.3-6.3-2.9-6.4-6l1.3-.3.8 1.5z" fill="currentColor" stroke="none"></path></svg>
+        Escribinos
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section data-component="Hero" data-screen-label="Hero" style="position:relative;overflow:hidden;background:#EEF8FD">
+    <div aria-hidden="true" style="position:absolute;width:420px;height:360px;right:-120px;top:-90px;background:#F1E6FD;border-radius:58% 42% 55% 45% / 50% 60% 40% 50%"></div>
+    <div aria-hidden="true" style="position:absolute;width:180px;height:160px;left:-60px;bottom:-70px;background:#BDE4F7;opacity:0.6;border-radius:50% 50% 45% 55%"></div>
+    
+  <div style="position:relative;max-width:1200px;margin:0 auto;padding:{{ heroPad }}px {{ px }}px;display:flex;align-items:center;justify-content:space-between;gap:40px">
+      <div style="max-width:620px">
+        <h1 style="font-family:Poppins,sans-serif;font-weight:700;font-size:{{ h1 }}px;line-height:1.15;margin:0 0 14px;color:#0B1F44;text-wrap:balance">Calzado lindo para toda la familia</h1>
+        <p style="font-size:{{ lead }}px;line-height:1.55;margin:0 0 24px;color:#5B6478;text-wrap:pretty;max-width:520px">Talle medido en centímetros y entrega en puntos de encuentro en Palpalá. Pagás cuando lo tenés en la mano.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px">
+          <a href="#catalogo" style="display:flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:12px;background:#0D47A1;color:#FFFFFF;text-decoration:none;font-weight:600;font-size:16px;transition:background 180ms" style-hover="background:#0B1F44;color:#FFFFFF" style-active="transform:scale(0.97)">Ver catálogo</a>
+          <a href="{{ wa }}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;justify-content:center;min-height:48px;padding:0 20px;border-radius:12px;border:2px solid #0D47A1;background:#FFFFFF;color:#0D47A1;text-decoration:none;font-weight:600;font-size:16px;transition:background 180ms" style-hover="background:#BDE4F7;color:#0D47A1" style-active="transform:scale(0.97)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.6-4.6A8.6 8.6 0 1 1 7.7 19.6L3 21z"></path><path d="M9.2 9.3c.3 1.7 1.8 3.6 3.6 4.4l1.1-1 1.5.8-.3 1.3c-2.8.3-6.3-2.9-6.4-6l1.3-.3.8 1.5z" fill="currentColor" stroke="none"></path></svg>
+            Consultar por WhatsApp
+          </a>
+        </div>
+      </div>
+      <sc-if value="{{ showNav }}" hint-placeholder-val="{{ false }}">
+        <img src="assets/logo.jpg" alt="Logo de Three Queens Calzados" style="width: 250px; height: 234px; border-radius: 50%; object-fit: cover; flex-shrink: 0; box-shadow: 0 12px 32px rgba(11,31,68,0.12); border: 6px solid #FFFFFF">
+      </sc-if>
+    </div></section>
+
+  <section data-component="TrustBar" aria-label="Por qué comprarnos" style="background:#FFFFFF;border-bottom:1px solid #E3EEF6">
+    <div style="max-width:1200px;margin:0 auto;padding:24px {{ px }}px;display:grid;grid-template-columns:repeat({{ trustCols }},minmax(0,1fr));gap:12px">
+      <div style="display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:14px;background:#EEF8FD">
+        <span style="flex-shrink:0;width:40px;height:40px;border-radius:12px;background:#BDE4F7;display:flex;align-items:center;justify-content:center;color:#0D47A1"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2"></rect><circle cx="12" cy="12" r="2.6"></circle><path d="M6 9.5v5M18 9.5v5"></path></svg></span>
+        <div><div style="font-weight:600;font-size:15px;line-height:1.3;color:#0B1F44">Pago contra entrega</div><div style="font-size:14px;line-height:1.4;color:#5B6478;margin-top:2px">Pagás al recibir.</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:14px;background:#EEF8FD">
+        <span style="flex-shrink:0;width:40px;height:40px;border-radius:12px;background:#BDE4F7;display:flex;align-items:center;justify-content:center;color:#0D47A1"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="8" width="20" height="8" rx="1.5"></rect><path d="M6 8v3M10 8v4M14 8v3M18 8v4"></path></svg></span>
+        <div><div style="font-weight:600;font-size:15px;line-height:1.3;color:#0B1F44">Talle medido en cm</div><div style="font-size:14px;line-height:1.4;color:#5B6478;margin-top:2px">Sin adivinar tu número.</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:14px;background:#EEF8FD">
+        <span style="flex-shrink:0;width:40px;height:40px;border-radius:12px;background:#BDE4F7;display:flex;align-items:center;justify-content:center;color:#0D47A1"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 6h11v10h-11z"></path><path d="M13.5 9.5h4l3 3.5v3h-7"></path><circle cx="6.5" cy="17" r="1.8"></circle><circle cx="17" cy="17" r="1.8"></circle></svg></span>
+        <div><div style="font-weight:600;font-size:15px;line-height:1.3;color:#0B1F44">Entrega o retiro</div><div style="font-size:14px;line-height:1.4;color:#5B6478;margin-top:2px">Punto de encuentro en Palpalá o retiro en General Savio.</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:14px;background:#EEF8FD">
+        <span style="flex-shrink:0;width:40px;height:40px;border-radius:12px;background:#BDE4F7;display:flex;align-items:center;justify-content:center;color:#0D47A1"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h15l-3.5-3.5"></path><path d="M20 15H5l3.5 3.5"></path></svg></span>
+        <div><div style="font-weight:600;font-size:15px;line-height:1.3;color:#0B1F44">Cambio de talle</div><div style="font-size:14px;line-height:1.4;color:#5B6478;margin-top:2px">Si no te queda, lo cambiamos.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="catalogo" data-component="ProductGrid" data-screen-label="Catálogo" style="background:#FFFFFF">
+    <div style="max-width:1200px;margin:0 auto;padding:{{ secPad }}px {{ px }}px">
+      <h2 style="font-family:Poppins,sans-serif;font-weight:700;font-size:{{ h2 }}px;line-height:1.2;margin:0 0 8px;color:#0B1F44">Nuestro catálogo</h2>
+      <p style="font-size:16px;line-height:1.5;margin:0 0 20px;color:#5B6478;max-width:560px;text-wrap:pretty">Fotos reales y medidas exactas de cada par. Consultá stock y talles por WhatsApp.</p>
+
+      <div data-component="CategoryFilter" role="tablist" aria-label="Filtrar por categoría" style="display:flex;gap:8px;overflow-x:auto;margin:0 -{{ px }}px 24px;padding:4px {{ px }}px 10px;scrollbar-width:none">
+        <sc-for list="{{ chips }}" as="chip" hint-placeholder-count="6">
+          <button type="button" role="tab" aria-selected="{{ chip.active }}" onClick="{{ chip.onClick }}" style="position:relative;flex-shrink:0;min-height:44px;padding:0 18px;border:none;border-radius:999px;background:{{ chip.bg }};color:{{ chip.fg }};font-family:Inter,sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:background 180ms,color 180ms" style-hover="filter:brightness(0.96)" style-active="transform:scale(0.96)">
+            {{ chip.label }}
+            <span aria-hidden="true" style="position:absolute;left:50%;bottom:6px;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:#B983F2;opacity:{{ chip.dot }}"></span>
+          </button>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ hasItems }}" hint-placeholder-val="{{ true }}">
+        <div ref="{{ gridRef }}" style="display:grid;grid-template-columns:repeat({{ gridCols }},minmax(0,1fr));gap:{{ gridGap }}px">
+          <sc-for list="{{ items }}" as="p" hint-placeholder-count="8">
+            <article data-component="ProductCard" style="display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #E3EEF6;border-radius:16px;overflow:hidden;box-shadow:0 2px 10px rgba(11,31,68,0.05);transition:box-shadow 200ms,transform 200ms" style-hover="box-shadow:0 8px 24px rgba(11,31,68,0.10);transform:translateY(-2px)">
+              <div role="img" aria-label="{{ p.alt }}" style="position:relative;aspect-ratio:1/1;background:#EEF8FD;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#0D47A1">
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="opacity:0.55"><path d="M2.5 16.5c0-2.5.4-6.5 1.8-7.5l3 2c1 .8 2.6.9 3.6.3L13.5 10c1.6 2 4.2 3.1 6.3 3.6 1 .3 1.7 1.1 1.7 2.1v1.3H2.5z"></path><path d="M2.5 19h19"></path></svg>
+                <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#5B6478">foto del par</span>
+              </div>
+              <div style="padding:{{ cardPad }}px;display:flex;flex-direction:column;gap:8px;flex:1">
+                <span style="align-self:flex-start;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;background:#F1E6FD;color:#0B1F44">{{ p.catLabel }}</span>
+                <h3 style="font-family:Poppins,sans-serif;font-weight:600;font-size:{{ h3 }}px;line-height:1.3;margin:0;color:#0B1F44;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ p.name }}</h3>
+                <div style="font-family:Inter,sans-serif;font-weight:600;font-size:{{ priceSize }}px;line-height:1.1;color:#0B1F44">{{ p.price }}</div>
+                <div aria-label="Talles disponibles" style="display:flex;flex-wrap:wrap;gap:4px">
+                  <sc-for list="{{ p.sizes }}" as="s" hint-placeholder-count="6">
+                    <span style="min-width:26px;text-align:center;font-size:12px;font-weight:500;padding:3px 5px;border-radius:6px;background:#EEF8FD;border:1px solid #BDE4F7;color:#0B1F44">{{ s }}</span>
+                  </sc-for>
+                </div>
+                <div style="font-size:13px;line-height:1.35;color:#5B6478">{{ p.insole }}</div>
+                <div style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:#0B1F44">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D47A1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h18M7 8l-4 4 4 4M17 8l4 4-4 4"></path></svg>
+                  {{ p.fit }}
+                </div>
+                <a href="{{ p.href }}" target="_blank" rel="noopener" aria-label="{{ p.cta }}" style="margin-top:auto;display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border-radius:12px;background:#0D47A1;color:#FFFFFF;text-decoration:none;font-weight:600;font-size:15px;transition:background 180ms" style-hover="background:#0B1F44;color:#FFFFFF" style-active="transform:scale(0.97)">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.6-4.6A8.6 8.6 0 1 1 7.7 19.6L3 21z"></path><path d="M9.2 9.3c.3 1.7 1.8 3.6 3.6 4.4l1.1-1 1.5.8-.3 1.3c-2.8.3-6.3-2.9-6.4-6l1.3-.3.8 1.5z" fill="currentColor" stroke="none"></path></svg>
+                  Lo quiero
+                </a>
+              </div>
+            </article>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:48px 20px;border-radius:16px;background:#EEF8FD;border:1px dashed #BDE4F7;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px">
+          <span style="width:64px;height:64px;border-radius:50%;background:#F1E6FD;display:flex;align-items:center;justify-content:center;color:#0D47A1"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 16.5c0-2.5.4-6.5 1.8-7.5l3 2c1 .8 2.6.9 3.6.3L13.5 10c1.6 2 4.2 3.1 6.3 3.6 1 .3 1.7 1.1 1.7 2.1v1.3H2.5z"></path><path d="M2.5 19h19"></path></svg></span>
+          <p style="margin:0;font-size:16px;line-height:1.5;color:#0B1F44;max-width:380px;text-wrap:pretty">No hay modelos en esta categoría por ahora. Escribinos y te contamos qué llega.</p>
+          <a href="{{ wa }}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;min-height:44px;padding:0 20px;border-radius:12px;background:#0D47A1;color:#FFFFFF;text-decoration:none;font-weight:600;font-size:15px" style-hover="background:#0B1F44;color:#FFFFFF">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.6-4.6A8.6 8.6 0 1 1 7.7 19.6L3 21z"></path><path d="M9.2 9.3c.3 1.7 1.8 3.6 3.6 4.4l1.1-1 1.5.8-.3 1.3c-2.8.3-6.3-2.9-6.4-6l1.3-.3.8 1.5z" fill="currentColor" stroke="none"></path></svg>
+            Escribinos
+          </a>
+        </div>
+      </sc-if>
+
+      <div style="margin-top:32px;padding:20px;border-radius:16px;background:#F1E6FD;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px">
+        <p style="margin:0;font-size:16px;line-height:1.5;color:#0B1F44;font-weight:500;max-width:520px">¿No encontrás tu talle o modelo? Tenemos más variedad. Escribinos.</p>
+        <a href="{{ wa }}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;min-height:44px;padding:0 20px;border-radius:12px;background:#0D47A1;color:#FFFFFF;text-decoration:none;font-weight:600;font-size:15px;transition:background 180ms" style-hover="background:#0B1F44;color:#FFFFFF" style-active="transform:scale(0.97)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.6-4.6A8.6 8.6 0 1 1 7.7 19.6L3 21z"></path><path d="M9.2 9.3c.3 1.7 1.8 3.6 3.6 4.4l1.1-1 1.5.8-.3 1.3c-2.8.3-6.3-2.9-6.4-6l1.3-.3.8 1.5z" fill="currentColor" stroke="none"></path></svg>
+          Escribir por WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="como-comprar" data-component="HowToBuy" data-screen-label="Cómo comprar" style="background:#EEF8FD">
+    <div style="max-width:1200px;margin:0 auto;padding:{{ secPad }}px {{ px }}px">
+      <h2 style="font-family:Poppins,sans-serif;font-weight:700;font-size:{{ h2 }}px;line-height:1.2;margin:0 0 24px;color:#0B1F44">Cómo comprar</h2>
+      <ol style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat({{ stepCols }},minmax(0,1fr));gap:16px">
+        <li style="background:#FFFFFF;border-radius:16px;padding:22px;box-shadow:0 2px 10px rgba(11,31,68,0.05);display:flex;gap:16px;align-items:flex-start">
+          <span style="flex-shrink:0;width:40px;height:40px;border-radius:50%;background:#0D47A1;color:#FFFFFF;font-family:Poppins,sans-serif;font-weight:700;font-size:18px;display:flex;align-items:center;justify-content:center">1</span>
+          <div><h3 style="font-family:Poppins,sans-serif;font-weight:600;font-size:18px;margin:6px 0 6px;color:#0B1F44">Elegí tu par</h3><p style="margin:0;font-size:15px;line-height:1.5;color:#5B6478">Mirá el catálogo y tocá "Lo quiero".</p></div>
+        </li>
+        <li style="background:#FFFFFF;border-radius:16px;padding:22px;box-shadow:0 2px 10px rgba(11,31,68,0.05);display:flex;gap:16px;align-items:flex-start">
+          <span style="flex-shrink:0;width:40px;height:40px;border-radius:50%;background:#0D47A1;color:#FFFFFF;font-family:Poppins,sans-serif;font-weight:700;font-size:18px;display:flex;align-items:center;justify-content:center">2</span>
+          <div><h3 style="font-family:Poppins,sans-serif;font-weight:600;font-size:18px;margin:6px 0 6px;color:#0B1F44">Coordinamos por WhatsApp</h3><p style="margin:0;font-size:15px;line-height:1.5;color:#5B6478">Te paso fotos reales, medidas y confirmamos tu talle.</p></div>
+        </li>
+        <li style="background:#FFFFFF;border-radius:16px;padding:22px;box-shadow:0 2px 10px rgba(11,31,68,0.05);display:flex;gap:16px;align-items:flex-start">
+          <span style="flex-shrink:0;width:40px;height:40px;border-radius:50%;background:#0D47A1;color:#FFFFFF;font-family:Poppins,sans-serif;font-weight:700;font-size:18px;display:flex;align-items:center;justify-content:center">3</span>
+          <div><h3 style="font-family:Poppins,sans-serif;font-weight:600;font-size:18px;margin:6px 0 6px;color:#0B1F44">Lo recibís y pagás en el momento</h3><p style="margin:0;font-size:15px;line-height:1.5;color:#5B6478">Nos encontramos en un punto de Palpalá o lo retirás en barrio General Savio.</p></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section data-component="Guarantee" data-screen-label="Garantía" style="background:#FFFFFF">
+    <div style="max-width:1200px;margin:0 auto;padding:{{ secPad }}px {{ px }}px 0">
+      <div style="position:relative;overflow:hidden;background:#BDE4F7;border-radius:16px;padding:{{ guarPad }}px;display:flex;gap:20px;align-items:flex-start">
+        <div aria-hidden="true" style="position:absolute;width:200px;height:180px;right:-60px;bottom:-80px;background:#F1E6FD;border-radius:55% 45% 50% 50%"></div>
+        <span style="position:relative;flex-shrink:0;width:52px;height:52px;border-radius:14px;background:#FFFFFF;display:flex;align-items:center;justify-content:center;color:#0D47A1"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6l8-3z"></path><path d="M8.5 12l2.5 2.5 4.5-5"></path></svg></span>
+        <div style="position:relative;max-width:640px">
+          <h2 style="font-family:Poppins,sans-serif;font-weight:700;font-size:{{ h2 }}px;line-height:1.2;margin:0 0 10px;color:#0B1F44">Te queda o lo cambiamos</h2>
+          <p style="margin:0;font-size:16px;line-height:1.6;color:#0B1F44;text-wrap:pretty">Si el talle no te queda, lo cambiás sin costo acercándote a nuestro domicilio en barrio General Savio Palpalá. También podemos coordinar el cambio en un punto de encuentro en Palpalá.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="preguntas" data-component="FAQ" data-screen-label="Preguntas" style="background:#FFFFFF">
+    <div style="max-width:820px;margin:0 auto;padding:{{ secPad }}px {{ px }}px">
+      <h2 style="font-family:Poppins,sans-serif;font-weight:700;font-size:{{ h2 }}px;line-height:1.2;margin:0 0 20px;color:#0B1F44">Preguntas frecuentes</h2>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="6">
+          <div data-component="FAQItem" style="border:1px solid #E3EEF6;border-radius:14px;background:{{ f.bg }};transition:background 200ms">
+            <h3 style="margin:0">
+              <button type="button" aria-expanded="{{ f.open }}" onClick="{{ f.toggle }}" style="width:100%;min-height:56px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 18px;border:none;background:transparent;border-radius:14px;text-align:left;cursor:pointer;font-family:Inter,sans-serif;font-weight:600;font-size:16px;line-height:1.4;color:#0B1F44" style-hover="background:#EEF8FD">
+                {{ f.q }}
+                <span aria-hidden="true" style="flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#BDE4F7;color:#0D47A1;display:flex;align-items:center;justify-content:center;transform:{{ f.rot }};transition:transform 200ms">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+                </span>
+              </button>
+            </h3>
+            <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+              <p style="margin:0;padding:0 18px 18px;font-size:15px;line-height:1.6;color:#5B6478;text-wrap:pretty">{{ f.a }}</p>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section id="zona" data-component="DeliveryZone" data-screen-label="Zona de entrega" style="background:#EEF8FD">
+    <div style="max-width:1200px;margin:0 auto;padding:{{ secPad }}px {{ px }}px">
+      <h2 style="font-family:Poppins,sans-serif;font-weight:700;font-size:{{ h2 }}px;line-height:1.2;margin:0 0 24px;color:#0B1F44">Dónde entregamos</h2>
+      <div style="display:grid;grid-template-columns:{{ zoneCols }};gap:20px;align-items:stretch">
+        <div role="img" aria-label="Mapa de la zona: puntos de encuentro en Palpalá y retiro en General Savio" style="min-height:{{ mapH }}px;border-radius:16px;border:1px solid #BDE4F7;background:repeating-linear-gradient(135deg,#EEF8FD 0 12px,#E1F2FB 12px 24px);display:flex;align-items:center;justify-content:center;padding:20px">
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:13px;line-height:1.5;color:#5B6478;background:#FFFFFF;padding:8px 12px;border-radius:8px;text-align:center">Google Maps embebido · Palpalá<br>zona general, sin pin</span>
+        </div>
+        <div style="background:#FFFFFF;border-radius:16px;padding:24px;box-shadow:0 2px 10px rgba(11,31,68,0.05);display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span style="flex-shrink:0;width:40px;height:40px;border-radius:12px;background:#BDE4F7;display:flex;align-items:center;justify-content:center;color:#0D47A1"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg></span>
+            <div><div style="font-size:14px;color:#5B6478">Zona de entrega</div><div style="font-family:Poppins,sans-serif;font-weight:600;font-size:18px;color:#0B1F44">Puntos de encuentro en Palpalá · Retiro en barrio General Savio</div></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span style="flex-shrink:0;width:40px;height:40px;border-radius:12px;background:#BDE4F7;display:flex;align-items:center;justify-content:center;color:#0D47A1"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span>
+            <div><div style="font-size:14px;color:#5B6478">Horarios</div><div style="font-weight:600;font-size:16px;line-height:1.5;color:#0B1F44">Lun a Vie 9–18 h · Sáb 9–13 h</div></div>
+          </div>
+          <a href="{{ wa }}" target="_blank" rel="noopener" style="margin-top:auto;display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:12px;background:#0D47A1;color:#FFFFFF;text-decoration:none;font-weight:600;font-size:16px;transition:background 180ms" style-hover="background:#0B1F44;color:#FFFFFF" style-active="transform:scale(0.97)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.6-4.6A8.6 8.6 0 1 1 7.7 19.6L3 21z"></path><path d="M9.2 9.3c.3 1.7 1.8 3.6 3.6 4.4l1.1-1 1.5.8-.3 1.3c-2.8.3-6.3-2.9-6.4-6l1.3-.3.8 1.5z" fill="currentColor" stroke="none"></path></svg>
+            Consultá el punto de encuentro
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer data-component="Footer" style="color: #FFFFFF; background-color: #0D47A1">
+  <div style="max-width:1200px;margin:0 auto;padding:40px {{ px }}px {{ footBottom }}px;display:grid;grid-template-columns:{{ footCols }};gap:28px">
+    <div style="display:flex;gap:12px;align-items:center">
+      <img src="assets/logo.jpg" alt="Logo de Three Queens Calzados" style="width:52px;height:52px;border-radius:50%;object-fit:cover">
+      <div><div style="font-family:Poppins,sans-serif;font-weight:600;font-size:17px">Three Queens Calzados</div><div style="font-size:14px;color:#D6E4F5">Palpalá, Jujuy</div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <a href="{{ wa }}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;min-height:44px;color:#FFFFFF;text-decoration:none;font-size:15px" style-hover="color:#BDE4F7">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.6-4.6A8.6 8.6 0 1 1 7.7 19.6L3 21z"></path><path d="M9.2 9.3c.3 1.7 1.8 3.6 3.6 4.4l1.1-1 1.5.8-.3 1.3c-2.8.3-6.3-2.9-6.4-6l1.3-.3.8 1.5z" fill="currentColor" stroke="none"></path></svg>
+        WhatsApp: 388 496-7506
+      </a>
+      <a href="#" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;min-height:44px;color:#FFFFFF;text-decoration:none;font-size:15px" style-hover="color:#BDE4F7">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"></rect><path d="M15.5 8H14a2 2 0 0 0-2 2v11M9.5 13h5"></path></svg>
+        Facebook
+      </a>
+      <a href="#" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;min-height:44px;color:#FFFFFF;text-decoration:none;font-size:15px" style-hover="color:#BDE4F7">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.3" cy="6.7" r="0.6" fill="currentColor"></circle></svg>
+        Instagram
+      </a>
+    </div>
+    <div style="font-size:15px;line-height:1.6;color:#D6E4F5">
+      <div style="font-weight:600;color:#FFFFFF;margin-bottom:4px">Horarios</div>
+      Lun a Vie 9–18 h<br>Sáb 9–13 h
+    </div>
+    <div style="grid-column:1/-1;border-top:1px solid #23375F;padding-top:20px;font-size:14px;color:#D6E4F5">© 2026 Three Queens Calzados</div>
+  </div>
+</footer>
+
+<a data-component="WhatsAppFloat" href="{{ wa }}" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" style="position:fixed;right:16px;bottom:16px;z-index:60;width:58px;height:58px;border-radius:50%;background:#25D366;color:#FFFFFF;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(11,31,68,0.25);transition:opacity 200ms,transform 200ms;opacity:{{ floatOpacity }};transform:{{ floatTransform }};pointer-events:{{ floatPointer }}" style-hover="filter:brightness(0.95)">
+  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.6-4.6A8.6 8.6 0 1 1 7.7 19.6L3 21z"></path><path d="M9.2 9.3c.3 1.7 1.8 3.6 3.6 4.4l1.1-1 1.5.8-.3 1.3c-2.8.3-6.3-2.9-6.4-6l1.3-.3.8 1.5z" fill="currentColor" stroke="none"></path></svg>
+</a>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;initialCategory&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;todos&quot;,&quot;zapatillas&quot;,&quot;zapatos&quot;,&quot;botas&quot;,&quot;borcegos&quot;,&quot;sandalias&quot;],&quot;default&quot;:&quot;todos&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Catálogo&quot;},&quot;emptyDemo&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Catálogo&quot;}}">
+const WA_NUM = '5493884967506';
+const WA = 'https://wa.me/' + WA_NUM + '?text=Hola%20Guadalupe!%20Quiero%20consultar%20por%20calzados';
+const CATS = { zapatillas: 'Zapatillas', zapatos: 'Zapatos', botas: 'Botas', borcegos: 'Borcegos', sandalias: 'Sandalias' };
+const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
+const PRODUCTS = [
+  { id: 'p1', name: 'Zapatilla urbana blanca', category: 'zapatillas', price: 35000, sizes: range(35, 40), insoleCm: 24, insoleRefSize: 37, fit: 'normal', image: '' },
+  { id: 'p2', name: 'Zapatilla running gris', category: 'zapatillas', price: 38000, sizes: range(38, 44), insoleCm: 26.5, insoleRefSize: 41, fit: 'chica', image: '' },
+  { id: 'p3', name: 'Zapatilla plataforma negra', category: 'zapatillas', price: 42000, sizes: range(35, 39), insoleCm: 24, insoleRefSize: 37, fit: 'normal', image: '' },
+  { id: 'p4', name: 'Zapatilla escolar negra', category: 'zapatillas', price: 28000, sizes: range(30, 38), insoleCm: 22, insoleRefSize: 34, fit: 'normal', image: '' },
+  { id: 'p5', name: 'Zapato de vestir negro', category: 'zapatos', price: 45000, sizes: range(39, 44), insoleCm: 27, insoleRefSize: 41, fit: 'grande', image: '' },
+  { id: 'p6', name: 'Bota caña alta suela track', category: 'botas', price: 58000, sizes: range(35, 40), insoleCm: 24, insoleRefSize: 37, fit: 'normal', image: '' },
+  { id: 'p7', name: 'Borcego de trabajo marrón', category: 'borcegos', price: 55000, sizes: range(38, 45), insoleCm: 27, insoleRefSize: 41, fit: 'grande', image: '' },
+  { id: 'p8', name: 'Borcego urbano negro', category: 'borcegos', price: 48000, sizes: range(35, 40), insoleCm: 24, insoleRefSize: 37, fit: 'normal', image: '' },
+  { id: 'p9', name: 'Sandalia plataforma beige', category: 'sandalias', price: 25000, sizes: range(35, 40), insoleCm: 24.5, insoleRefSize: 37, fit: 'chica', image: '' },
+  { id: 'p10', name: 'Sandalia de tiras negra', category: 'sandalias', price: 20000, sizes: range(35, 39), insoleCm: 24, insoleRefSize: 37, fit: 'normal', image: '' },
+];
+const FAQS = [
+  ['¿Cómo recibo mi par?', 'Coordinamos un punto de encuentro en Palpalá, o lo retirás en nuestro domicilio en barrio General Savio.'],
+  ['¿Cómo pago?', 'Pagás cuando recibís el par, en efectivo o por transferencia/Mercado Pago.'],
+  ['¿Cómo sé qué talle pedir?', 'Cada par tiene la medida de la plantilla en centímetros y te indicamos si la horma es chica, normal o grande. Si tenés dudas, medí tu pie y te ayudamos a elegir.'],
+  ['¿Puedo cambiar el talle?', 'Sí. Si no te queda, lo cambiás sin costo acercándote a General Savio, o coordinamos el cambio en un punto de encuentro en Palpalá.'],
+  ['¿Los calzados son originales?', 'No, son calzados alternativos, y lo decimos desde el principio. Así pagás un precio justo por lo que recibís, sin sorpresas.'],
+  ['¿Qué días atienden?', 'Lunes a viernes de 9 a 18 h y sábados de 9 a 13 h.'],
+];
+const ars = n => '$' + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+const cm = n => String(n).replace('.', ',');
+
+class Component extends DCLogic {
+  state = { w: window.innerWidth, cat: this.props.initialCategory ?? 'todos', open: {}, gridVis: false };
+  gridRef = el => {
+    if (el && el !== this.gridEl) { if (this.io && this.gridEl) this.io.unobserve(this.gridEl); this.gridEl = el; this.io && this.io.observe(el); }
+  };
+  componentDidMount() {
+    this.onR = () => this.setState({ w: window.innerWidth });
+    window.addEventListener('resize', this.onR);
+    this.io = new IntersectionObserver(es => this.setState({ gridVis: es[0].isIntersecting }), { threshold: 0 });
+    if (this.gridEl) this.io.observe(this.gridEl);
+  }
+  componentDidUpdate(prev) {
+    if (prev.initialCategory !== this.props.initialCategory) this.setState({ cat: this.props.initialCategory ?? 'todos' });
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this.onR); this.io && this.io.disconnect(); }
+  renderVals() {
+    const { w, cat, open, gridVis } = this.state;
+    const bp = w < 768 ? 'm' : w < 1024 ? 't' : 'd';
+    const m = bp === 'm', d = bp === 'd';
+    const list = this.props.emptyDemo ? [] : PRODUCTS.filter(p => cat === 'todos' || p.category === cat);
+    const items = list.map(p => {
+      const art = (p.category === 'zapatos' || p.category === 'borcegos') ? 'el' : 'la';
+      const msg = `Hola Guadalupe! Me interesa ${art} ${p.name} (${ars(p.price)}). Mi talle es: `;
+      return {
+        ...p, catLabel: CATS[p.category], price: ars(p.price),
+        insole: `Plantilla: ${cm(p.insoleCm)} cm (talle ${p.insoleRefSize})`,
+        fit: 'Horma ' + p.fit,
+        href: `https://wa.me/${WA_NUM}?text=${encodeURIComponent(msg)}`,
+        alt: `Foto de ${p.name}`, cta: `Lo quiero: ${p.name}`,
+      };
+    });
+    const chips = [['todos', 'Todos'], ...Object.entries(CATS)].map(([key, label]) => {
+      const active = key === cat;
+      return { key, label, active, bg: active ? '#0D47A1' : '#BDE4F7', fg: active ? '#FFFFFF' : '#0B1F44', dot: active ? 1 : 0,
+        onClick: () => this.setState({ cat: key }) };
+    });
+    const faqs = FAQS.map(([q, a], i) => ({ q, a, open: !!open[i], bg: open[i] ? '#EEF8FD' : '#FFFFFF', rot: open[i] ? 'rotate(45deg)' : 'none',
+      toggle: () => this.setState(s => ({ open: { ...s.open, [i]: !s.open[i] } })) }));
+    const hideFloat = m && gridVis && items.length > 0;
+    return {
+      wa: WA, showNav: d,
+      px: m ? 16 : bp === 't' ? 32 : 40,
+      heroPad: m ? 36 : d ? 56 : 48,
+      secPad: m ? 56 : d ? 88 : 72,
+      h1: m ? 30 : d ? 46 : 38, h2: m ? 24 : 30, h3: m ? 15 : 17, lead: m ? 16 : 18,
+      priceSize: m ? 20 : 22, cardPad: m ? 12 : 16, gridGap: m ? 12 : 20,
+      trustCols: m ? 2 : 4, gridCols: m ? 2 : bp === 't' ? 3 : 4, stepCols: m ? 1 : 3,
+      guarPad: m ? 24 : 40, zoneCols: m ? '1fr' : 'minmax(0,1.5fr) minmax(0,1fr)', mapH: m ? 240 : 340,
+      footCols: m ? '1fr' : 'repeat(3, minmax(0,1fr))', footBottom: m ? 96 : 32,
+      chips, items, hasItems: items.length > 0, isEmpty: items.length === 0, gridRef: this.gridRef, faqs,
+      floatOpacity: hideFloat ? 0 : 1, floatTransform: hideFloat ? 'scale(0.8)' : 'none', floatPointer: hideFloat ? 'none' : 'auto',
+    };
+  }
+}
+</script>
+</body>
+</html>

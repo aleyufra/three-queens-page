@@ -1,0 +1,69 @@
+---
+import { Image } from 'astro:assets';
+import { categorias, type Product } from '../data/products';
+import { formatCm, formatPrecio, whatsappProductoUrl } from '../lib/format';
+import Boton from './Boton.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  product: Product;
+}
+
+const { product: p } = Astro.props;
+---
+
+<article class="flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-card transition-[box-shadow,translate] duration-200 hover:-translate-y-0.5 hover:shadow-card-hover">
+  {p.imagen ? (
+    <Image
+      src={p.imagen}
+      alt={`Foto de ${p.nombre}`}
+      widths={[240, 360, 560]}
+      sizes="(min-width: 1024px) 280px, (min-width: 768px) 33vw, 50vw"
+      class="aspect-square w-full object-cover"
+    />
+  ) : (
+    <div
+      role="img"
+      aria-label={`${p.nombre} (foto próximamente)`}
+      class="flex aspect-square flex-col items-center justify-center gap-1.5 bg-celeste-50 text-brand"
+    >
+      <Icon name="zapato" size={56} strokeWidth={1.3} class="opacity-55" />
+      <span class="font-mono text-[11px] text-muted">foto del par</span>
+    </div>
+  )}
+
+  <div class="flex flex-1 flex-col gap-2 p-3 md:p-4">
+    <span class="self-start rounded-full bg-lila-100 px-2.5 py-0.5 text-xs font-semibold">
+      {categorias[p.categoria].nombre}
+    </span>
+    <h3 class="line-clamp-2 font-display text-[15px] leading-snug font-semibold md:text-[17px]">
+      {p.nombre}
+    </h3>
+    <p class="text-xl leading-tight font-semibold md:text-[22px]">{formatPrecio(p.precio)}</p>
+
+    <ul aria-label="Talles disponibles" class="flex flex-wrap gap-1">
+      {p.talles.map((t) => (
+        <li class="min-w-[26px] rounded-md border border-celeste-200 bg-celeste-50 px-1.5 py-0.5 text-center text-xs font-medium">
+          {t}
+        </li>
+      ))}
+    </ul>
+
+    <p class="text-[13px] leading-snug text-muted">
+      Plantilla: {formatCm(p.medidaPlantillaCm)} cm (talle {p.talleReferencia})
+    </p>
+    <p class="flex items-center gap-1.5 text-[13px] font-medium">
+      <Icon name="horma" size={16} class="text-brand" />
+      Horma {p.horma}
+    </p>
+
+    <Boton
+      href={whatsappProductoUrl(p)}
+      whatsapp
+      class="mt-auto px-3"
+      aria-label={`Lo quiero: ${p.nombre}`}
+    >
+      Lo quiero
+    </Boton>
+  </div>
+</article>

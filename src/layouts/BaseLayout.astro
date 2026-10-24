@@ -1,0 +1,95 @@
+---
+import { Font, getImage } from 'astro:assets';
+import '../styles/global.css';
+import logo from '../assets/logo.jpg';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = `${site.nombre} | Calzado en Palpalá, Jujuy`, description = site.descripcion } =
+  Astro.props;
+
+// Favicon, ícono de iOS e imagen para compartir en redes se generan desde el logo.
+const [favicon, appleIcon, ogImage] = await Promise.all([
+  getImage({ src: logo, width: 32, height: 32, format: 'png' }),
+  getImage({ src: logo, width: 180, height: 180, format: 'png' }),
+  getImage({ src: logo, width: 1080, height: 1080, format: 'jpg' }),
+]);
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImageUrl = new URL(ogImage.src, Astro.site);
+
+// Datos estructurados: ayudan a Google a mostrar el negocio con horario y teléfono.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ShoeStore',
+  name: site.nombre,
+  description: site.descripcion,
+  url: Astro.site?.href,
+  image: ogImageUrl.href,
+  telephone: `+${site.whatsapp.numero}`,
+  priceRange: '$$',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Palpalá',
+    addressRegion: 'Jujuy',
+    addressCountry: 'AR',
+  },
+  areaServed: 'Palpalá, Jujuy',
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '09:00',
+      closes: '18:00',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: 'Saturday',
+      opens: '09:00',
+      closes: '13:00',
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <link rel="icon" type="image/png" sizes="32x32" href={favicon.src} />
+    <link rel="apple-touch-icon" href={appleIcon.src} />
+    <meta name="theme-color" content="#0d47a1" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:site_name" content={site.nombre} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1080" />
+    <meta property="og:image:height" content="1080" />
+    <meta property="og:image:alt" content={`Logo de ${site.nombre}`} />
+    <meta name="twitter:card" content="summary" />
+
+    <Font cssVariable="--font-inter" preload={[{ weight: 400 }, { weight: 600 }]} />
+    <Font cssVariable="--font-poppins" preload={[{ weight: 700 }]} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

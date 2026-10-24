@@ -1,0 +1,48 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.jpg';
+import { site } from '../data/site';
+import { whatsappUrl } from '../lib/format';
+import Boton from './Boton.astro';
+
+const secciones = [
+  { href: '#catalogo', texto: 'Catálogo' },
+  { href: '#como-comprar', texto: 'Cómo comprar' },
+  { href: '#preguntas', texto: 'Preguntas' },
+  { href: '#zona', texto: 'Zona de entrega' },
+];
+---
+
+<header class="sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur-sm">
+  <div class="container-page flex h-16 items-center justify-between gap-4">
+    <a href="#" class="flex items-center gap-2.5 text-navy no-underline">
+      <Image
+        src={logo}
+        alt={`Logo de ${site.nombre}`}
+        width={40}
+        height={40}
+        densities={[1, 2]}
+        loading="eager"
+        class="size-10 rounded-full object-cover"
+      />
+      <span class="font-display text-lg font-bold">{site.nombreCorto}</span>
+    </a>
+
+    <div class="flex items-center gap-7">
+      <!-- En celular y tablet la navegación se oculta, como en el diseño -->
+      <nav aria-label="Secciones" class="hidden gap-6 lg:flex">
+        {secciones.map((s) => (
+          <a
+            href={s.href}
+            class="py-3 text-[15px] font-medium text-navy no-underline hover:text-brand"
+          >
+            {s.texto}
+          </a>
+        ))}
+      </nav>
+      <Boton href={whatsappUrl()} whatsapp class="px-4">
+        Escribinos
+      </Boton>
+    </div>
+  </div>
+</header>
