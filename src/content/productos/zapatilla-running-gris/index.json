@@ -1,5 +1,5 @@
 {
-  "nombre": "Zapatilla running gris",
+  "nombre": "Zapatilla running gris xd",
   "categoria": "zapatillas",
   "precio": 38000,
   "talles": [
@@ -27,7 +27,9 @@
     }
   ],
   "horma": "chica",
-  "fotos": [],
+  "fotos": [
+    "1000116464.webp"
+  ],
   "destacado": false,
   "visible": true,
   "orden": 20
