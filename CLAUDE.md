@@ -1,6 +1,8 @@
 # Three Queens Calzados: landing / catálogo
 
-Landing estática para un emprendimiento de calzado de Palpalá (Jujuy, Argentina). Idioma del sitio: español rioplatense (`es-AR`, voseo). Se publica en Vercel: https://threequeenscalzados.vercel.app
+Landing estática para un emprendimiento de calzado de Palpalá (Jujuy, Argentina). Idioma del sitio: español rioplatense (`es-AR`, voseo). Se publica en Cloudflare Workers (static assets, `wrangler.jsonc`): https://three-queens-page.ale-yufra28.workers.dev
+
+La dueña edita el catálogo desde `/admin` (Sveltia CMS, backend GitHub). Cada guardado es un commit en `main`, y Workers Builds reconstruye el sitio.
 
 Ver también @AGENTS.md (instrucciones de Astro y del servidor de desarrollo).
 
@@ -11,7 +13,9 @@ Ver también @AGENTS.md (instrucciones de Astro y del servidor de desarrollo).
 
 ## Stack
 
-- Astro 7, salida `static` (sin SSR ni adapter: Vercel detecta Astro solo)
+- Astro 7, salida `static`. **No agregar el adapter de Cloudflare**: el Worker solo sirve `dist/` como assets
+- Content Collections (content layer, `glob()` loader) para productos y categorías, en `src/content.config.ts`
+- Sveltia CMS en `public/admin/` (versión fijada en `index.html`; la interfaz solo está en inglés)
 - TypeScript strict (`astro/tsconfigs/strict`). Se queda en TS 6 porque `@astrojs/check` todavía no soporta TS 7
 - Tailwind CSS v4 vía `@tailwindcss/vite`. **No hay `tailwind.config.js`**: los tokens están en `src/styles/global.css` dentro de `@theme`
 - Fuentes Inter y Poppins con la API de fuentes de Astro (`fonts` en `astro.config.mjs` + `<Font />` en el layout): se descargan en el build y se sirven desde el propio sitio
@@ -34,26 +38,38 @@ Antes de dar algo por terminado: `pnpm format`, `pnpm check` y `pnpm build` sin 
 ## Estructura
 
 ```
+public/admin/   index.html (carga Sveltia CMS) + config.yml (campos del panel, en español)
 src/
-  assets/       logo.jpg (y fotos de productos en assets/productos/), siempre vía <Image /> o getImage()
+  assets/       logo.jpg, siempre vía <Image /> o getImage(). assets/fotos/ es la carpeta general
+                de fotos del panel (puede no existir)
   components/   una sección por componente + piezas reutilizables (Boton, Icon, ProductCard)
+  content/      LO ESCRIBE EL PANEL (Prettier lo ignora)
+    categorias/<slug>.json          nombre, articulo (el/la), orden
+    productos/<slug>/index.json     datos del producto + sus fotos en la misma carpeta
+  content.config.ts  schemas Zod de las colecciones (tienen que coincidir con config.yml)
   data/
     site.ts       datos del negocio: WhatsApp, horarios, zona, mapa, redes
-    products.ts   tipo Product, categorías y lista de productos
     contenido.ts  beneficios, pasos de compra, garantía y preguntas frecuentes
   layouts/      BaseLayout.astro: <head>, SEO, Open Graph, favicon y JSON-LD
   lib/
+    catalogo.ts   getCatalogo(): categorías + productos visibles ordenados, tipos Producto/Categoria
     format.ts     formatPrecio, formatCm, whatsappUrl, whatsappProductoUrl, horariosTexto
     icons.ts      trazos SVG de los íconos + tipo IconName
   pages/        index.astro (la única página)
   styles/       global.css (Tailwind + tokens + estilos base)
+docs/           GUIA-PANEL.md: guía del panel para la dueña (lenguaje muy simple)
 design-ref/     diseño original exportado de Claude Design. SOLO REFERENCIA: no modificar,
                 está excluido de tsconfig, Prettier y build
 ```
 
 ## Convenciones
 
-- **Nada de datos hardcodeados en componentes**: precios, teléfono, horarios, textos de secciones y productos salen de `src/data/`. Los títulos de sección y los textos del hero sí viven en el componente.
+- **Nada de datos hardcodeados en componentes**: productos y categorías salen de `getCatalogo()` (`src/lib/catalogo.ts`); teléfono, horarios y textos de secciones, de `src/data/`. Los títulos de sección y los textos del hero sí viven en el componente.
+- **Catálogo**:
+  - Un campo nuevo se agrega en `src/content.config.ts` **y** en `public/admin/config.yml`, en el mismo orden.
+  - Los campos opcionales usan `.nullish()`, porque el panel puede guardar `null`.
+  - `categoria` es texto, no `reference()`: si la categoría no existe, el producto va a "Otros" con un `console.warn` y el build no falla.
+  - Las fotos usan `image()`, con rutas relativas a la carpeta del producto.
 - **Links de WhatsApp**: siempre con `whatsappUrl()` o `whatsappProductoUrl()` de `src/lib/format.ts`. Nunca armar `wa.me` a mano.
 - **Precios**: siempre `formatPrecio()` (`Intl.NumberFormat('es-AR', ARS)` sin decimales).
 - **Colores y estilos**: usar los tokens (`bg-brand`, `text-navy`, `bg-celeste-50`, `text-muted`, `rounded-tile`, `shadow-card`…). Si hace falta un color nuevo, se agrega a `@theme`, no como valor suelto.
@@ -67,6 +83,8 @@ design-ref/     diseño original exportado de Claude Design. SOLO REFERENCIA: no
 
 ## Tareas frecuentes
 
-- **Agregar o editar un producto**: `src/data/products.ts`. Las fotos van en `src/assets/productos/`, se importan y se asignan a `imagen`.
+- **Agregar o editar un producto**: normalmente desde el panel. A mano: crear `src/content/productos/<slug>/index.json` (copiar uno existente) con las fotos en la misma carpeta.
+- **Probar el panel en local**: `pnpm dev` y abrir http://localhost:4321/admin/index.html en Chrome o Edge → "Work with Local Repository" (ver README).
+- **Actualizar Sveltia CMS**: cambiar la versión en `public/admin/index.html` y en el `$schema` de `config.yml`, y probarlo en local.
 - **Cambiar teléfono u horarios**: `src/data/site.ts` (si cambian los horarios, actualizar también `openingHoursSpecification` en `BaseLayout.astro` y la pregunta "¿Qué días atienden?" en `contenido.ts`).
 - **Redes sociales**: pegar las URLs en `site.redes` (`src/data/site.ts`). Si están vacías, no se muestran.
