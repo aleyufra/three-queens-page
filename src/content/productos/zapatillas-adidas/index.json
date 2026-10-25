@@ -1,0 +1,23 @@
+{
+  "nombre": "Zapatillas Adidas",
+  "categoria": "zapatillas",
+  "precio": 25000,
+  "publico": "hombre",
+  "talles": [
+    {
+      "talle": 39
+    },
+    {
+      "talle": 40
+    },
+    {
+      "talle": 41
+    }
+  ],
+  "fotos": [
+    "zapatillas-adidas.webp"
+  ],
+  "destacado": false,
+  "visible": true,
+  "orden": 110
+}

@@ -23,8 +23,9 @@
       "talle": 40
     }
   ],
-  "horma": "chica",
-  "fotos": [],
+  "fotos": [
+    "sandalia-plataforma-beige.webp"
+  ],
   "destacado": false,
   "visible": true,
   "orden": 90

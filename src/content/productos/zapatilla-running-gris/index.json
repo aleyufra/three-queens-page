@@ -4,9 +4,6 @@
   "precio": 38000,
   "talles": [
     {
-      "talle": 38
-    },
-    {
       "talle": 39
     },
     {
@@ -21,14 +18,10 @@
     },
     {
       "talle": 43
-    },
-    {
-      "talle": 44
     }
   ],
-  "horma": "chica",
   "fotos": [
-    "1000116464.webp"
+    "zapatilla-running-gris.webp"
   ],
   "destacado": false,
   "visible": true,

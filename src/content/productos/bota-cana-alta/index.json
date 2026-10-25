@@ -18,13 +18,11 @@
     },
     {
       "talle": 39
-    },
-    {
-      "talle": 40
     }
   ],
-  "horma": "normal",
-  "fotos": [],
+  "fotos": [
+    "bota-cano-alto.webp"
+  ],
   "destacado": false,
   "visible": true,
   "orden": 60

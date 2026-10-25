@@ -29,8 +29,9 @@
       "talle": 45
     }
   ],
-  "horma": "grande",
-  "fotos": [],
+  "fotos": [
+    "borcego-de-trabajo-marron.webp"
+  ],
   "destacado": false,
   "visible": true,
   "orden": 70

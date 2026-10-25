@@ -20,8 +20,9 @@
       "talle": 39
     }
   ],
-  "horma": "normal",
-  "fotos": [],
+  "fotos": [
+    "zapatilla-plataforma-negra.webp"
+  ],
   "destacado": false,
   "visible": true,
   "orden": 30

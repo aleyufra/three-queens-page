@@ -43,7 +43,7 @@ export const preguntas: { pregunta: string; respuesta: string }[] = [
   {
     pregunta: '¿Cómo sé qué talle pedir?',
     respuesta:
-      'Cada par tiene la medida de la plantilla en centímetros y te indicamos si la horma es chica, normal o grande. Si tenés dudas, medí tu pie y te ayudamos a elegir.',
+      'Cada par tiene la medida de la plantilla en centímetros. Si tenés dudas, medí tu pie y te ayudamos a elegir.',
   },
   {
     pregunta: '¿Puedo cambiar el talle?',

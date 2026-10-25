@@ -7,14 +7,8 @@
       "talle": 39
     },
     {
-      "talle": 40
-    },
-    {
       "talle": 41,
       "plantillaCm": 27
-    },
-    {
-      "talle": 42
     },
     {
       "talle": 43
@@ -23,8 +17,9 @@
       "talle": 44
     }
   ],
-  "horma": "grande",
-  "fotos": [],
+  "fotos": [
+    "zapato-vestir-negro.webp"
+  ],
   "destacado": false,
   "visible": true,
   "orden": 50

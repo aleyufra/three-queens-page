@@ -4,9 +4,6 @@
   "precio": 28000,
   "talles": [
     {
-      "talle": 30
-    },
-    {
       "talle": 31
     },
     {
@@ -27,13 +24,11 @@
     },
     {
       "talle": 37
-    },
-    {
-      "talle": 38
     }
   ],
-  "horma": "normal",
-  "fotos": [],
+  "fotos": [
+    "zapatilla-escolar-negra.webp"
+  ],
   "destacado": false,
   "visible": true,
   "orden": 40

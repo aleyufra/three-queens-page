@@ -23,8 +23,9 @@
       "talle": 40
     }
   ],
-  "horma": "normal",
-  "fotos": [],
+  "fotos": [
+    "zapatilla-urbana-blanca.webp"
+  ],
   "destacado": false,
   "visible": true,
   "orden": 10

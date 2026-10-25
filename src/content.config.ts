@@ -40,7 +40,7 @@ const productos = defineCollection({
           }),
         )
         .min(1),
-      horma: z.enum(['chica', 'normal', 'grande']),
+      // horma: z.enum(['chica', 'normal', 'grande']),
       // El panel pide al menos 1 foto; acá se acepta vacío para que los productos
       // sin foto todavía muestren el placeholder.
       fotos: z.array(image()).default([]),
