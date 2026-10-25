@@ -54,13 +54,19 @@ src/
   lib/
     catalogo.ts   getCatalogo(): categorías + productos visibles ordenados, tipos Producto/Categoria
     format.ts     formatPrecio, formatCm, whatsappUrl, whatsappProductoUrl, horariosTexto
+    publicacion.ts  urlProducto (absoluta), textoTalles, textoPublicacion, textoCompartir
     icons.ts      trazos SVG de los íconos + tipo IconName
-  pages/        index.astro (la única página)
+  pages/
+    index.astro             landing con el catálogo
+    producto/[slug].astro   una página por producto (también los ocultos, con noindex), con
+                            Open Graph para que el link se vea con foto y precio en Facebook
+    panel.astro             /panel: copiar o compartir productos para grupos de Facebook
+                            (no enlazado, noindex, fuera del sitemap). Sin APIs de Facebook
   styles/       global.css (Tailwind + tokens + estilos base)
-docs/           GUIA-PANEL.md: guía del panel para la dueña (lenguaje muy simple)
-design-ref/     diseño original exportado de Claude Design. SOLO REFERENCIA: no modificar,
-                está excluido de tsconfig, Prettier y build
+docs/           GUIA-PANEL.md: guía del panel y de /panel para la dueña (lenguaje muy simple)
 ```
+
+(`design-ref/`, el diseño original, ya se borró del repo; sigue excluido en tsconfig y Prettier.)
 
 ## Convenciones
 
@@ -70,6 +76,7 @@ design-ref/     diseño original exportado de Claude Design. SOLO REFERENCIA: no
   - Los campos opcionales usan `.nullish()`, porque el panel puede guardar `null`.
   - `categoria` es texto, no `reference()`: si la categoría no existe, el producto va a "Otros" con un `console.warn` y el build no falla.
   - Las fotos usan `image()`, con rutas relativas a la carpeta del producto.
+- **Fotos de producto**: componente `FotosProducto.astro` (una foto, carrusel o placeholder). La imagen de Open Graph la genera `BaseLayout` (prop `imagen`), cuadrada y sin agrandar.
 - **Links de WhatsApp**: siempre con `whatsappUrl()` o `whatsappProductoUrl()` de `src/lib/format.ts`. Nunca armar `wa.me` a mano.
 - **Precios**: siempre `formatPrecio()` (`Intl.NumberFormat('es-AR', ARS)` sin decimales).
 - **Colores y estilos**: usar los tokens (`bg-brand`, `text-navy`, `bg-celeste-50`, `text-muted`, `rounded-tile`, `shadow-card`…). Si hace falta un color nuevo, se agrega a `@theme`, no como valor suelto.

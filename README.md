@@ -57,6 +57,11 @@ Funciona en **Chrome o Edge**: Firefox no tiene la API que usa Sveltia para leer
    git clean -fd src/content   # borra fotos o productos nuevos que creaste en la prueba
    ```
 
+## Páginas de producto y panel de publicación
+
+- **`/producto/<slug>/`**: una página por producto. Tiene etiquetas Open Graph y Twitter con foto, precio y talles, para que el link se vea como tarjeta al pegarlo en Facebook o WhatsApp. Para ver cómo lo muestra Facebook, usá el [Sharing Debugger](https://developers.facebook.com/tools/debug/).
+- **`/panel/`**: la dueña copia o comparte cada producto para los grupos de Facebook. No está en el menú, tiene `noindex` y no figura en el sitemap. No usa ninguna API de Facebook. Las líneas fijas del texto (entrega y pago) están en `src/data/site.ts`, en `publicacion`.
+
 ## Publicación
 
 El sitio se publica en **Cloudflare Workers** (static assets) en https://three-queens-page.ale-yufra28.workers.dev, configurado en `wrangler.jsonc`. Es 100 % estático: `pnpm build` genera `dist/` y no hay adapter de Cloudflare.
