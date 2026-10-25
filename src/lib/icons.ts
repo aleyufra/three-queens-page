@@ -20,6 +20,10 @@ export const icons = {
   mas: '<path d="M12 5v14M5 12h14"/>',
   anterior: '<path d="M15 18l-6-6 6-6"/>',
   siguiente: '<path d="M9 18l6-6-6-6"/>',
+  copiar:
+    '<rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/>',
+  compartir:
+    '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/>',
   facebook:
     '<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M15.5 8H14a2 2 0 0 0-2 2v11M9.5 13h5"/>',
   instagram:

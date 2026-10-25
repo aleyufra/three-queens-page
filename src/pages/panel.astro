@@ -1,0 +1,263 @@
+---
+// Panel de publicación: ayuda a la dueña a copiar o compartir cada producto en grupos de
+// Facebook desde el celular. No está enlazado desde el menú, ni en el sitemap ni en buscadores.
+// No publica nada solo: Facebook no permite automatizar publicaciones en grupos.
+import { Image } from 'astro:assets';
+import Icon from '../components/Icon.astro';
+import logo from '../assets/logo.jpg';
+import { site } from '../data/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCatalogo } from '../lib/catalogo';
+import { formatPrecio } from '../lib/format';
+import { textoCompartir, textoPublicacion, urlProducto } from '../lib/publicacion';
+
+const { categorias, productos } = await getCatalogo({ incluirOcultos: true });
+
+const filtros = [
+  { valor: 'todos', nombre: 'Todos' },
+  ...categorias.map((c) => ({ valor: c.id, nombre: c.nombre })),
+];
+const disponibles = productos.filter((p) => p.visible).length;
+---
+
+<BaseLayout title={`Panel de publicación | ${site.nombreCorto}`} noindex>
+  <header class="sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur-sm">
+    <div class="container-page flex h-16 items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5">
+        <Image
+          src={logo}
+          alt=""
+          width={36}
+          height={36}
+          densities={[1, 2]}
+          loading="eager"
+          class="size-9 rounded-full object-cover"
+        />
+        <h1 class="font-display text-lg leading-tight font-bold">Panel de publicación</h1>
+      </div>
+      <a
+        href="/"
+        class="flex min-h-11 items-center text-[15px] font-medium text-brand no-underline hover:underline"
+      >
+        Ver la página
+      </a>
+    </div>
+  </header>
+
+  <main class="container-page pt-5 pb-32">
+    <p class="mb-4 max-w-140 text-[15px] leading-normal text-pretty text-muted">
+      Tocá <strong class="text-navy">Copiar publicación</strong> y pegala en el grupo de Facebook.
+      El link muestra la foto y el precio. <strong class="text-navy">Compartir</strong> abre las
+      apps del celular.
+    </p>
+
+    <div
+      role="group"
+      aria-label="Filtrar por categoría"
+      class="-mx-4 mb-4 flex gap-2 overflow-x-auto px-4 pt-1 pb-2.5 [scrollbar-width:none] md:-mx-8 md:px-8 lg:-mx-10 lg:px-10"
+    >
+      {filtros.map((f) => (
+        <button
+          type="button"
+          data-panel-filtro={f.valor}
+          aria-pressed={f.valor === 'todos' ? 'true' : 'false'}
+          class="min-h-11 shrink-0 cursor-pointer rounded-full bg-celeste-200 px-4.5 text-[15px] font-semibold text-navy transition-colors duration-200 hover:brightness-95 active:scale-[0.96] aria-pressed:bg-brand aria-pressed:text-white"
+        >
+          {f.nombre}
+        </button>
+      ))}
+    </div>
+
+    <ul class="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+      {productos.map((p) => (
+        <li
+          data-panel-item
+          data-categoria={p.categoria.id}
+          data-oculto={p.visible ? undefined : ''}
+          data-nombre={p.nombre}
+          data-texto={textoPublicacion(p)}
+          data-compartir={textoCompartir(p)}
+          data-url={urlProducto(p.id)}
+          class="flex flex-col gap-3 rounded-2xl border border-line bg-white p-3 shadow-card"
+        >
+          <div class="flex gap-3">
+            {p.fotos[0] ? (
+              <Image
+                src={p.fotos[0]}
+                alt=""
+                width={96}
+                height={96}
+                densities={[1, 2]}
+                fit="cover"
+                class="size-24 shrink-0 rounded-xl object-cover"
+              />
+            ) : (
+              <span class="flex size-24 shrink-0 items-center justify-center rounded-xl bg-celeste-50 text-brand">
+                <Icon name="zapato" size={36} strokeWidth={1.3} class="opacity-55" />
+              </span>
+            )}
+            <div class="flex min-w-0 flex-col gap-1">
+              <div class="flex flex-wrap gap-1">
+                <span class="rounded-full bg-lila-100 px-2 py-0.5 text-xs font-semibold">
+                  {p.categoria.nombre}
+                </span>
+                {!p.visible && (
+                  <span class="rounded-full bg-navy px-2 py-0.5 text-xs font-semibold text-white">
+                    Oculto
+                  </span>
+                )}
+              </div>
+              <h2 class="line-clamp-2 font-display text-base leading-snug font-semibold">
+                {p.nombre}
+              </h2>
+              <p class="text-lg leading-tight font-semibold">{formatPrecio(p.precio)}</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              data-panel-copiar
+              class="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-brand px-3 text-[15px] font-semibold text-white transition-[background-color,scale] duration-200 hover:bg-navy active:scale-[0.97]"
+            >
+              <Icon name="copiar" size={18} />
+              Copiar publicación
+            </button>
+            <button
+              type="button"
+              data-panel-compartir
+              class="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-brand bg-white px-3 text-[15px] font-semibold text-brand transition-[background-color,scale] duration-200 hover:bg-celeste-200 active:scale-[0.97]"
+            >
+              <Icon name="compartir" size={18} />
+              Compartir
+            </button>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </main>
+
+  <!-- Barra fija: copia todos los productos disponibles de la categoría elegida -->
+  <div class="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white/95 backdrop-blur-sm">
+    <div class="container-page py-3">
+      <button
+        type="button"
+        data-panel-copiar-todo
+        class="flex min-h-13 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-navy px-4 text-base font-semibold text-white transition-[background-color,scale] duration-200 hover:bg-brand active:scale-[0.97] md:mx-auto md:max-w-md"
+      >
+        <Icon name="copiar" size={20} />
+        <span data-panel-cantidad>{`Copiar todo (${disponibles})`}</span>
+      </button>
+    </div>
+  </div>
+
+  <div
+    data-panel-aviso
+    role="status"
+    aria-live="polite"
+    class="pointer-events-none fixed inset-x-4 bottom-24 z-50 mx-auto max-w-xs translate-y-2 rounded-xl bg-navy px-4 py-3 text-center text-[15px] font-semibold text-white opacity-0 shadow-float transition-[opacity,translate] duration-200 data-visible:translate-y-0 data-visible:opacity-100"
+  ></div>
+</BaseLayout>
+
+<script>
+  const items = [...document.querySelectorAll<HTMLElement>('[data-panel-item]')];
+  const filtros = document.querySelectorAll<HTMLButtonElement>('[data-panel-filtro]');
+  const cantidad = document.querySelector<HTMLElement>('[data-panel-cantidad]');
+  const aviso = document.querySelector<HTMLElement>('[data-panel-aviso]');
+  let temporizador: ReturnType<typeof setTimeout> | undefined;
+
+  function avisar(mensaje: string) {
+    if (!aviso) return;
+    aviso.textContent = mensaje;
+    aviso.toggleAttribute('data-visible', true);
+    clearTimeout(temporizador);
+    temporizador = setTimeout(() => aviso.toggleAttribute('data-visible', false), 2000);
+  }
+
+  // Respaldo para navegadores viejos o sin permiso de portapapeles
+  function copiarViejo(texto: string) {
+    const area = document.createElement('textarea');
+    area.value = texto;
+    area.setAttribute('readonly', '');
+    area.style.position = 'fixed';
+    area.style.opacity = '0';
+    document.body.append(area);
+    area.select();
+    area.setSelectionRange(0, texto.length); // iOS
+    let ok = false;
+    try {
+      ok = document.execCommand('copy');
+    } catch {
+      ok = false;
+    }
+    area.remove();
+    return ok;
+  }
+
+  async function copiar(texto: string) {
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(texto);
+        return true;
+      } catch {
+        // sigue con el respaldo
+      }
+    }
+    return copiarViejo(texto);
+  }
+
+  const disponiblesVisibles = () =>
+    items.filter((item) => !item.hidden && !item.hasAttribute('data-oculto'));
+
+  function filtrar(filtro: string) {
+    items.forEach((item) => {
+      item.hidden = filtro !== 'todos' && item.dataset.categoria !== filtro;
+    });
+    filtros.forEach((b) =>
+      b.setAttribute('aria-pressed', String(b.dataset.panelFiltro === filtro)),
+    );
+    if (cantidad) cantidad.textContent = `Copiar todo (${disponiblesVisibles().length})`;
+  }
+
+  filtros.forEach((b) =>
+    b.addEventListener('click', () => filtrar(b.dataset.panelFiltro ?? 'todos')),
+  );
+
+  items.forEach((item) => {
+    const { texto = '', compartir = '', url = '', nombre = '' } = item.dataset;
+
+    item.querySelector('[data-panel-copiar]')?.addEventListener('click', async () => {
+      avisar((await copiar(texto)) ? '¡Copiado!' : 'No se pudo copiar');
+    });
+
+    item.querySelector('[data-panel-compartir]')?.addEventListener('click', async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: nombre, text: compartir, url });
+        } catch (error) {
+          // Si la dueña cierra el menú de compartir no es un error
+          if (!(error instanceof DOMException && error.name === 'AbortError')) {
+            avisar('No se pudo compartir');
+          }
+        }
+        return;
+      }
+      window.open(
+        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+        '_blank',
+        'noopener',
+      );
+    });
+  });
+
+  document.querySelector('[data-panel-copiar-todo]')?.addEventListener('click', async () => {
+    const lista = disponiblesVisibles();
+    if (lista.length === 0) {
+      avisar('No hay productos para copiar');
+      return;
+    }
+    const ok = await copiar(lista.map((item) => item.dataset.texto ?? '').join('\n\n'));
+    const total = lista.length === 1 ? '1 publicación' : `${lista.length} publicaciones`;
+    avisar(ok ? `¡Copiamos ${total}!` : 'No se pudo copiar');
+  });
+</script>

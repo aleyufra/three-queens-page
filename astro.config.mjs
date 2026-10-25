@@ -36,5 +36,6 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
-  integrations: [sitemap()],
+  // /panel es solo para la dueña: no va en el sitemap (además tiene noindex)
+  integrations: [sitemap({ filter: (page) => !page.includes('/panel') })],
 });
