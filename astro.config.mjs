@@ -6,8 +6,8 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  // URL final en Vercel. La usan el sitemap y las etiquetas Open Graph.
-  site: 'https://threequeenscalzados.vercel.app',
+  // URL publicada en Cloudflare Workers. La usan el sitemap y las etiquetas Open Graph.
+  site: 'https://three-queens-page.ale-yufra28.workers.dev',
   output: 'static',
 
   // Las fuentes se descargan en el build y se sirven desde el propio sitio.
