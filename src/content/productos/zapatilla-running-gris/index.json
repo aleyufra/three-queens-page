@@ -1,7 +1,9 @@
 {
-  "nombre": "Zapatilla running gris xd",
+  "nombre": "Zapatilla running gris",
   "categoria": "zapatillas",
-  "precio": 38000,
+  "precio": 2000,
+  "precioAnterior": 38000,
+  "publico": "unisex",
   "talles": [
     {
       "talle": 39
