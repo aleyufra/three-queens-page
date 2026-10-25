@@ -1,0 +1,217 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms@0.252.0/schema/sveltia-cms.json
+# Configuración del panel /admin (Sveltia CMS). Documentación: https://sveltiacms.app/en/docs
+# (la primera línea le da autocompletado y validación a la extensión YAML de VS Code)
+#
+# Si agregás o cambiás un campo acá, cambialo también en src/content.config.ts (y al revés):
+# si no coinciden, el build falla.
+#
+# La interfaz de Sveltia (botones como "Save" o "Publish") solo está en inglés.
+# Las etiquetas, ayudas y mensajes de commit de este archivo sí están en español.
+# No hay secretos acá: el login lo hace el worker de base_url.
+
+backend:
+  name: github
+  repo: aleyufra/three-queens-page
+  branch: main
+  # Worker de Cloudflare que hace el login con GitHub (Sveltia CMS Authenticator).
+  # El client ID y el secret de la OAuth App viven en ese worker, nunca en este repo.
+  base_url: https://sveltia-cms-auth.ale-yufra28.workers.dev/
+  commit_messages:
+    create: 'Panel: agregar {{collection}} "{{slug}}"'
+    update: 'Panel: actualizar {{collection}} "{{slug}}"'
+    delete: 'Panel: borrar {{collection}} "{{slug}}"'
+    uploadMedia: 'Panel: subir foto "{{path}}"'
+    deleteMedia: 'Panel: borrar foto "{{path}}"'
+
+app_title: Panel Three Queens
+site_url: https://three-queens-page.ale-yufra28.workers.dev
+display_url: https://three-queens-page.ale-yufra28.workers.dev
+
+# Carpeta general de fotos (Sveltia la exige). Las fotos de cada producto se guardan en la
+# carpeta del producto (ver la colección "productos"). public_folder empieza con /src para
+# que Astro también pueda optimizar una foto elegida desde acá.
+media_folder: src/assets/fotos
+public_folder: /src/assets/fotos
+
+media_libraries:
+  default:
+    config:
+      # Las fotos del celular pesan varios MB: se convierten a WebP (también las HEIC de iPhone)
+      # y se achican hasta 1600 px sin deformarlas, antes de subirlas.
+      # Después Astro genera las versiones chicas para la página.
+      transformations:
+        raster_image:
+          format: webp
+          quality: 80
+          width: 1600
+          height: 1600
+      slugify_filename: true
+
+# Nombres de archivo sin tildes, ñ ni espacios: "Bota caña alta" → "bota-cana-alta"
+slug:
+  encoding: ascii
+  clean_accents: true
+
+output:
+  # Un campo opcional vacío no se guarda (si no, el build lo rechazaría)
+  omit_empty_optional_fields: true
+
+collections:
+  - name: productos
+    label: Productos
+    label_singular: producto
+    description: Los calzados del catálogo. Cada vez que guardás, la página se actualiza en 1 o 2 minutos.
+    icon: steps
+    folder: src/content/productos
+    # Una carpeta por producto, con sus fotos adentro
+    path: '{{slug}}/index'
+    media_folder: ''
+    public_folder: ''
+    format: json
+    extension: json
+    create: true
+    delete: true
+    identifier_field: nombre
+    slug: '{{nombre}}'
+    summary: '{{nombre}} · ${{precio}}'
+    sortable_fields:
+      fields: [orden, nombre, precio]
+      default: { field: orden, direction: ascending }
+    view_filters:
+      - { label: Se muestran, field: visible, pattern: true }
+      - { label: Ocultos, field: visible, pattern: false }
+      - { label: Destacados, field: destacado, pattern: true }
+    view_groups:
+      - { label: Categoría, field: categoria }
+    fields:
+      - name: nombre
+        label: Nombre
+        hint: 'Como se ve en la página. Ej.: Zapatilla urbana blanca'
+      - name: categoria
+        label: Categoría
+        widget: relation
+        collection: categorias
+        value_field: '{{slug}}'
+        display_fields: [nombre]
+        search_fields: [nombre]
+        dropdown_threshold: 8
+      - name: precio
+        label: Precio
+        widget: number
+        value_type: int
+        min: 0
+        before_input: $
+        hint: 'En pesos, sin puntos ni comas. Ej.: 35000'
+      - name: precioAnterior
+        label: Precio anterior (opcional)
+        widget: number
+        value_type: int
+        min: 0
+        required: false
+        before_input: $
+        hint: Si lo bajaste de precio, poné acá el precio viejo y se muestra tachado. Si no, dejalo vacío.
+      - name: publico
+        label: Para quién es (opcional)
+        widget: select
+        required: false
+        options:
+          - { label: Mujer, value: mujer }
+          - { label: Hombre, value: hombre }
+          - { label: Niños, value: ninos }
+          - { label: Unisex, value: unisex }
+        hint: Se muestra al lado de la categoría.
+      - name: talles
+        label: Talles disponibles
+        label_singular: talle
+        widget: list
+        min: 1
+        summary: 'Talle {{talle}}'
+        hint: Un renglón por cada talle que tenés. Si se termina un talle, borralo.
+        fields:
+          - name: talle
+            label: Talle
+            widget: number
+            value_type: float
+            min: 15
+            max: 50
+          - name: plantillaCm
+            label: Largo de plantilla en cm (opcional)
+            widget: number
+            value_type: float
+            min: 5
+            max: 40
+            required: false
+            hint: 'Medida por dentro del calzado. Ej.: 24.5. Si no lo mediste, dejalo vacío.'
+      - name: horma
+        label: Horma
+        widget: select
+        default: normal
+        options:
+          - { label: Chica (conviene un talle más), value: chica }
+          - { label: Normal, value: normal }
+          - { label: Grande (conviene un talle menos), value: grande }
+      - name: fotos
+        label: Fotos
+        widget: image
+        multiple: true
+        min: 1
+        max: 8
+        # Sin `accept`: así también acepta HEIC (iPhone) y lo convierte a WebP como el resto
+        hint: Al menos 1. La primera es la que se ve primero. Podés subirlas directo del celular, se achican solas.
+      - name: descripcion
+        label: Descripción corta (opcional)
+        widget: text
+        required: false
+        maxlength: 120
+        hint: 'Una o dos frases. Ej.: Suela de goma, ideal para el día a día.'
+      - name: destacado
+        label: Destacado
+        widget: boolean
+        default: false
+        hint: Aparece primero en el catálogo, con la etiqueta "Destacado".
+      - name: visible
+        label: Mostrar en la página
+        widget: boolean
+        default: true
+        hint: Apagalo para ocultar el producto sin borrarlo (por ejemplo, si no hay stock).
+      - name: orden
+        label: Orden
+        widget: number
+        value_type: int
+        default: 100
+        hint: Los números más chicos aparecen primero. Los destacados siempre van arriba de todo.
+
+  - name: categorias
+    label: Categorías
+    label_singular: categoría
+    description: Los botones para filtrar el catálogo. Para borrar una categoría, primero pasá sus productos a otra.
+    icon: category
+    folder: src/content/categorias
+    format: json
+    extension: json
+    create: true
+    delete: true
+    identifier_field: nombre
+    slug: '{{nombre}}'
+    summary: '{{nombre}}'
+    sortable_fields:
+      fields: [orden, nombre]
+      default: { field: orden, direction: ascending }
+    fields:
+      - name: nombre
+        label: Nombre
+        hint: 'Como se ve en el botón del filtro, en plural. Ej.: Zapatillas'
+      - name: articulo
+        label: ¿"El" o "la"?
+        widget: select
+        default: la
+        options:
+          - { label: la (la zapatilla), value: la }
+          - { label: el (el borcego), value: el }
+        hint: 'Se usa en el mensaje de WhatsApp: "Me interesa la zapatilla…"'
+      - name: orden
+        label: Orden
+        widget: number
+        value_type: int
+        default: 100
+        hint: Los números más chicos aparecen primero en el filtro.
