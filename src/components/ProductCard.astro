@@ -29,24 +29,54 @@ const imagenProps = {
   {p.fotos.length === 1 && <Image src={p.fotos[0]!} alt={`Foto de ${p.nombre}`} {...imagenProps} />}
 
   {p.fotos.length > 1 && (
-    // Varias fotos: se pasan deslizando (scroll-snap de CSS, sin JavaScript)
-    <div class="relative">
+    // Varias fotos: se pasan deslizando (scroll-snap de CSS, anda sin JavaScript).
+    // Con JS aparecen las flechas y los puntos marcan la foto actual.
+    <div data-carrusel class="relative">
       <div
+        data-carrusel-pista
         role="region"
+        aria-roledescription="carrusel"
         aria-label={`Fotos de ${p.nombre}`}
         tabindex="0"
-        class="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none]"
+        class="flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {p.fotos.map((foto, i) => (
           <Image src={foto} alt={`Foto ${i + 1} de ${p.nombre}`} {...imagenProps} />
         ))}
       </div>
-      <span
+
+      {[
+        { accion: 'anterior', etiqueta: 'Foto anterior', lado: 'left-0' },
+        { accion: 'siguiente', etiqueta: 'Foto siguiente', lado: 'right-0' },
+      ].map((b) => (
+        <button
+          type="button"
+          hidden
+          data-carrusel-boton={b.accion}
+          aria-label={b.etiqueta}
+          class:list={[
+            'absolute top-1/2 flex size-11 -translate-y-1/2 cursor-pointer items-center justify-center',
+            b.lado,
+          ]}
+        >
+          <span class="flex size-8 items-center justify-center rounded-full bg-white/90 text-navy shadow-card transition-transform active:scale-90">
+            <Icon name={b.accion === 'anterior' ? 'anterior' : 'siguiente'} size={18} strokeWidth={2.4} />
+          </span>
+        </button>
+      ))}
+
+      <div
         aria-hidden="true"
-        class="pointer-events-none absolute right-2 bottom-2 rounded-full bg-navy/75 px-2 py-0.5 text-xs font-medium text-white"
+        class="pointer-events-none absolute inset-x-0 bottom-2 flex justify-center gap-1.5"
       >
-        {p.fotos.length} fotos ›
-      </span>
+        {p.fotos.map((_, i) => (
+          <span
+            data-carrusel-punto
+            data-activo={i === 0 ? '' : undefined}
+            class="size-1.5 rounded-full bg-white/70 shadow-sm transition-[width,background-color] duration-200 data-activo:w-4 data-activo:bg-white"
+          />
+        ))}
+      </div>
     </div>
   )}
 
@@ -136,3 +166,42 @@ const imagenProps = {
     </Boton>
   </div>
 </article>
+
+<script>
+  // Flechas y puntos del carrusel de fotos. Astro incluye este script una sola vez
+  // aunque haya muchas tarjetas.
+  const suave = window.matchMedia('(prefers-reduced-motion: no-preference)');
+
+  document.querySelectorAll<HTMLElement>('[data-carrusel]').forEach((carrusel) => {
+    const pista = carrusel.querySelector<HTMLElement>('[data-carrusel-pista]');
+    const botones = carrusel.querySelectorAll<HTMLButtonElement>('[data-carrusel-boton]');
+    const puntos = carrusel.querySelectorAll<HTMLElement>('[data-carrusel-punto]');
+    if (!pista) return;
+    const total = pista.children.length;
+
+    const actual = () => Math.round(pista.scrollLeft / pista.clientWidth);
+
+    // Al pasar la última vuelve a la primera (y al revés)
+    const ir = (i: number) =>
+      pista.scrollTo({
+        left: ((i + total) % total) * pista.clientWidth,
+        behavior: suave.matches ? 'smooth' : 'auto',
+      });
+
+    botones.forEach((boton) => {
+      boton.hidden = false;
+      boton.addEventListener('click', () => {
+        ir(actual() + (boton.dataset.carruselBoton === 'anterior' ? -1 : 1));
+      });
+    });
+
+    pista.addEventListener(
+      'scroll',
+      () => {
+        const i = actual();
+        puntos.forEach((punto, j) => punto.toggleAttribute('data-activo', i === j));
+      },
+      { passive: true },
+    );
+  });
+</script>

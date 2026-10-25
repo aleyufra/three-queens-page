@@ -19,6 +19,8 @@ export const icons = {
   pin: '<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
   reloj: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
   mas: '<path d="M12 5v14M5 12h14"/>',
+  anterior: '<path d="M15 18l-6-6 6-6"/>',
+  siguiente: '<path d="M9 18l6-6-6-6"/>',
   facebook:
     '<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M15.5 8H14a2 2 0 0 0-2 2v11M9.5 13h5"/>',
   instagram:

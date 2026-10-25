@@ -27,7 +27,10 @@
     }
   ],
   "horma": "chica",
-  "fotos": [],
+  "fotos": [
+    "zapatillas-running-foto-1.webp",
+    "zapatillas-running-foto-2.webp"
+  ],
   "destacado": false,
   "visible": true,
   "orden": 20
