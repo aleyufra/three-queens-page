@@ -1,0 +1,40 @@
+{
+  "nombre": "Zapatilla escolar negra",
+  "categoria": "zapatillas",
+  "precio": 28000,
+  "talles": [
+    {
+      "talle": 30
+    },
+    {
+      "talle": 31
+    },
+    {
+      "talle": 32
+    },
+    {
+      "talle": 33
+    },
+    {
+      "talle": 34,
+      "plantillaCm": 22
+    },
+    {
+      "talle": 35
+    },
+    {
+      "talle": 36
+    },
+    {
+      "talle": 37
+    },
+    {
+      "talle": 38
+    }
+  ],
+  "horma": "normal",
+  "fotos": [],
+  "destacado": false,
+  "visible": true,
+  "orden": 40
+}

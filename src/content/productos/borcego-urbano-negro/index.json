@@ -1,0 +1,31 @@
+{
+  "nombre": "Borcego urbano negro",
+  "categoria": "borcegos",
+  "precio": 48000,
+  "talles": [
+    {
+      "talle": 35
+    },
+    {
+      "talle": 36
+    },
+    {
+      "talle": 37,
+      "plantillaCm": 24
+    },
+    {
+      "talle": 38
+    },
+    {
+      "talle": 39
+    },
+    {
+      "talle": 40
+    }
+  ],
+  "horma": "normal",
+  "fotos": [],
+  "destacado": false,
+  "visible": true,
+  "orden": 80
+}

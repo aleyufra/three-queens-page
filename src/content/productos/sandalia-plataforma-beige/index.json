@@ -1,0 +1,31 @@
+{
+  "nombre": "Sandalia plataforma beige",
+  "categoria": "sandalias",
+  "precio": 25000,
+  "talles": [
+    {
+      "talle": 35
+    },
+    {
+      "talle": 36
+    },
+    {
+      "talle": 37,
+      "plantillaCm": 24.5
+    },
+    {
+      "talle": 38
+    },
+    {
+      "talle": 39
+    },
+    {
+      "talle": 40
+    }
+  ],
+  "horma": "chica",
+  "fotos": [],
+  "destacado": false,
+  "visible": true,
+  "orden": 90
+}

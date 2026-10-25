@@ -1,0 +1,28 @@
+{
+  "nombre": "Sandalia de tiras negra",
+  "categoria": "sandalias",
+  "precio": 20000,
+  "talles": [
+    {
+      "talle": 35
+    },
+    {
+      "talle": 36
+    },
+    {
+      "talle": 37,
+      "plantillaCm": 24
+    },
+    {
+      "talle": 38
+    },
+    {
+      "talle": 39
+    }
+  ],
+  "horma": "normal",
+  "fotos": [],
+  "destacado": false,
+  "visible": true,
+  "orden": 100
+}

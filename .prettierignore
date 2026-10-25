@@ -3,3 +3,7 @@ dist/
 .astro/
 node_modules/
 pnpm-lock.yaml
+# Los JSON del catálogo los escribe el panel (Sveltia CMS)
+src/content/
+# Config de Cloudflare: se deja con su formato original
+wrangler.jsonc

@@ -1,0 +1,37 @@
+{
+  "nombre": "Borcego de trabajo marrón",
+  "categoria": "borcegos",
+  "precio": 55000,
+  "talles": [
+    {
+      "talle": 38
+    },
+    {
+      "talle": 39
+    },
+    {
+      "talle": 40
+    },
+    {
+      "talle": 41,
+      "plantillaCm": 27
+    },
+    {
+      "talle": 42
+    },
+    {
+      "talle": 43
+    },
+    {
+      "talle": 44
+    },
+    {
+      "talle": 45
+    }
+  ],
+  "horma": "grande",
+  "fotos": [],
+  "destacado": false,
+  "visible": true,
+  "orden": 70
+}

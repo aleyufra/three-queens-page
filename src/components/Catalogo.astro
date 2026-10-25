@@ -1,16 +1,15 @@
 ---
-import { categorias, products, type Categoria } from '../data/products';
+import { getCatalogo } from '../lib/catalogo';
 import { whatsappUrl } from '../lib/format';
 import Boton from './Boton.astro';
 import Icon from './Icon.astro';
 import ProductCard from './ProductCard.astro';
 
-const filtros: { valor: 'todos' | Categoria; nombre: string }[] = [
+const { categorias, productos } = await getCatalogo();
+
+const filtros = [
   { valor: 'todos', nombre: 'Todos' },
-  ...(Object.keys(categorias) as Categoria[]).map((c) => ({
-    valor: c,
-    nombre: categorias[c].nombre,
-  })),
+  ...categorias.map((c) => ({ valor: c.id, nombre: c.nombre })),
 ];
 ---
 
@@ -46,9 +45,9 @@ const filtros: { valor: 'todos' | Categoria; nombre: string }[] = [
     <p data-catalogo-estado aria-live="polite" class="sr-only"></p>
 
     <ul data-catalogo-grilla class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
-      {products.map((p) => (
-        <li data-categoria={p.categoria}>
-          <ProductCard product={p} />
+      {productos.map((p) => (
+        <li data-categoria={p.categoria.id}>
+          <ProductCard producto={p} />
         </li>
       ))}
     </ul>

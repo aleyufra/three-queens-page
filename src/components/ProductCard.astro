@@ -1,27 +1,56 @@
 ---
 import { Image } from 'astro:assets';
-import { categorias, type Product } from '../data/products';
+import { publicos, type Producto } from '../lib/catalogo';
 import { formatCm, formatPrecio, whatsappProductoUrl } from '../lib/format';
 import Boton from './Boton.astro';
 import Icon from './Icon.astro';
 
 interface Props {
-  product: Product;
+  producto: Producto;
 }
 
-const { product: p } = Astro.props;
+const { producto: p } = Astro.props;
+
+const etiqueta = p.publico ? `${p.categoria.nombre} · ${publicos[p.publico]}` : p.categoria.nombre;
+const precioAnterior = p.precioAnterior && p.precioAnterior > p.precio ? p.precioAnterior : null;
+// Solo los talles a los que se les cargó la medida de plantilla
+const medidos = p.talles.flatMap(({ talle, plantillaCm }) =>
+  plantillaCm ? [{ talle, cm: plantillaCm }] : [],
+);
+const cms = medidos.map((m) => m.cm);
+const imagenProps = {
+  widths: [240, 360, 560],
+  sizes: '(min-width: 1024px) 280px, (min-width: 768px) 33vw, 50vw',
+  class: 'aspect-square w-full shrink-0 snap-center object-cover',
+};
 ---
 
 <article class="flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-card transition-[box-shadow,translate] duration-200 hover:-translate-y-0.5 hover:shadow-card-hover">
-  {p.imagen ? (
-    <Image
-      src={p.imagen}
-      alt={`Foto de ${p.nombre}`}
-      widths={[240, 360, 560]}
-      sizes="(min-width: 1024px) 280px, (min-width: 768px) 33vw, 50vw"
-      class="aspect-square w-full object-cover"
-    />
-  ) : (
+  {p.fotos.length === 1 && <Image src={p.fotos[0]!} alt={`Foto de ${p.nombre}`} {...imagenProps} />}
+
+  {p.fotos.length > 1 && (
+    // Varias fotos: se pasan deslizando (scroll-snap de CSS, sin JavaScript)
+    <div class="relative">
+      <div
+        role="region"
+        aria-label={`Fotos de ${p.nombre}`}
+        tabindex="0"
+        class="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none]"
+      >
+        {p.fotos.map((foto, i) => (
+          <Image src={foto} alt={`Foto ${i + 1} de ${p.nombre}`} {...imagenProps} />
+        ))}
+      </div>
+      <span
+        aria-hidden="true"
+        class="pointer-events-none absolute right-2 bottom-2 rounded-full bg-navy/75 px-2 py-0.5 text-xs font-medium text-white"
+      >
+        {p.fotos.length} fotos ›
+      </span>
+    </div>
+  )}
+
+  {p.fotos.length === 0 && (
     <div
       role="img"
       aria-label={`${p.nombre} (foto próximamente)`}
@@ -33,25 +62,65 @@ const { product: p } = Astro.props;
   )}
 
   <div class="flex flex-1 flex-col gap-2 p-3 md:p-4">
-    <span class="self-start rounded-full bg-lila-100 px-2.5 py-0.5 text-xs font-semibold">
-      {categorias[p.categoria].nombre}
-    </span>
+    <div class="flex flex-wrap gap-1">
+      {p.destacado && (
+        <span class="rounded-full bg-brand px-2.5 py-0.5 text-xs font-semibold text-white">
+          Destacado
+        </span>
+      )}
+      <span class="rounded-full bg-lila-100 px-2.5 py-0.5 text-xs font-semibold">{etiqueta}</span>
+    </div>
     <h3 class="line-clamp-2 font-display text-[15px] leading-snug font-semibold md:text-[17px]">
       {p.nombre}
     </h3>
-    <p class="text-xl leading-tight font-semibold md:text-[22px]">{formatPrecio(p.precio)}</p>
+    {p.descripcion && (
+      <p class="line-clamp-2 text-[13px] leading-snug text-muted">{p.descripcion}</p>
+    )}
+    <p class="flex flex-wrap items-baseline gap-x-2">
+      <span class="text-xl leading-tight font-semibold md:text-[22px]">
+        {formatPrecio(p.precio)}
+      </span>
+      {precioAnterior && (
+        <s class="text-sm text-muted">
+          <span class="sr-only">Antes:</span>
+          {formatPrecio(precioAnterior)}
+        </s>
+      )}
+    </p>
 
     <ul aria-label="Talles disponibles" class="flex flex-wrap gap-1">
-      {p.talles.map((t) => (
+      {p.talles.map(({ talle }) => (
         <li class="min-w-[26px] rounded-md border border-celeste-200 bg-celeste-50 px-1.5 py-0.5 text-center text-xs font-medium">
-          {t}
+          {talle}
         </li>
       ))}
     </ul>
 
-    <p class="text-[13px] leading-snug text-muted">
-      Plantilla: {formatCm(p.medidaPlantillaCm)} cm (talle {p.talleReferencia})
-    </p>
+    {medidos.length === 1 && (
+      <p class="text-[13px] leading-snug text-muted">
+        Plantilla: {formatCm(medidos[0]!.cm)} cm (talle {medidos[0]!.talle})
+      </p>
+    )}
+    {medidos.length > 1 && (
+      <details class="group text-[13px] leading-snug text-muted">
+        <summary class="flex min-h-11 cursor-pointer list-none items-center gap-1.5 [&::-webkit-details-marker]:hidden">
+          Plantilla: {formatCm(Math.min(...cms))} a {formatCm(Math.max(...cms))} cm
+          <Icon
+            name="mas"
+            size={12}
+            strokeWidth={2.6}
+            class="text-brand transition-transform duration-200 group-open:rotate-45"
+          />
+        </summary>
+        <ul class="grid grid-cols-2 gap-x-3 pb-1">
+          {medidos.map((m) => (
+            <li>
+              Talle {m.talle}: {formatCm(m.cm)} cm
+            </li>
+          ))}
+        </ul>
+      </details>
+    )}
     <p class="flex items-center gap-1.5 text-[13px] font-medium">
       <Icon name="horma" size={16} class="text-brand" />
       Horma {p.horma}

@@ -1,0 +1,34 @@
+{
+  "nombre": "Zapatilla running gris",
+  "categoria": "zapatillas",
+  "precio": 38000,
+  "talles": [
+    {
+      "talle": 38
+    },
+    {
+      "talle": 39
+    },
+    {
+      "talle": 40
+    },
+    {
+      "talle": 41,
+      "plantillaCm": 26.5
+    },
+    {
+      "talle": 42
+    },
+    {
+      "talle": 43
+    },
+    {
+      "talle": 44
+    }
+  ],
+  "horma": "chica",
+  "fotos": [],
+  "destacado": false,
+  "visible": true,
+  "orden": 20
+}
