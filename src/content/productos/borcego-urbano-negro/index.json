@@ -1,11 +1,9 @@
 {
   "nombre": "Borcego urbano negro",
   "categoria": "borcegos",
-  "precio": 48000,
+  "precio": 43500,
+  "publico": "mujer",
   "talles": [
-    {
-      "talle": 35
-    },
     {
       "talle": 36
     },
@@ -17,14 +15,13 @@
       "talle": 38
     },
     {
-      "talle": 39
-    },
-    {
       "talle": 40
     }
   ],
   "horma": "normal",
-  "fotos": [],
+  "fotos": [
+    "pasted-image-1792907924005.webp"
+  ],
   "destacado": false,
   "visible": true,
   "orden": 80
