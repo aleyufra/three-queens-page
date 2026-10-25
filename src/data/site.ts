@@ -21,6 +21,12 @@ export const site = {
 
   entrega: 'Puntos de encuentro en Palpalá · Retiro en barrio General Savio',
 
+  // Líneas fijas del texto que se copia desde /panel para los grupos de Facebook
+  publicacion: {
+    entrega: 'Entrega en punto de encuentro en Palpalá o retiro en B° General Savio',
+    pago: 'Pagás cuando lo tenés en la mano',
+  },
+
   mapa: {
     // Búsqueda que se muestra en el iframe de Google Maps (zona general, no la dirección exacta).
     busqueda: 'Barrio General Savio, Palpalá, Jujuy, Argentina',

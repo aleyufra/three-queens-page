@@ -1,0 +1,148 @@
+---
+// Fotos de un producto: una sola, carrusel si hay varias o placeholder si no hay ninguna.
+// Lo usan la tarjeta del catálogo y la página del producto.
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+
+interface Props {
+  fotos: ImageMetadata[];
+  nombre: string;
+  widths: number[];
+  sizes: string;
+  /** Primera foto sin lazy loading (cuando es lo primero que se ve, como en la página del producto) */
+  prioridad?: boolean;
+  class?: string;
+}
+
+const { fotos, nombre, widths, sizes, prioridad = false, class: clase } = Astro.props;
+const claseFoto = 'aspect-square w-full shrink-0 snap-center object-cover';
+const carga = (i: number) => (prioridad && i === 0 ? 'eager' : 'lazy');
+---
+
+{fotos.length === 1 && (
+  <Image
+    src={fotos[0]!}
+    alt={`Foto de ${nombre}`}
+    {widths}
+    {sizes}
+    loading={carga(0)}
+    class:list={[claseFoto, clase]}
+  />
+)}
+
+{fotos.length > 1 && (
+  // Varias fotos: se pasan deslizando (scroll-snap de CSS, anda sin JavaScript).
+  // Con JS aparecen las flechas y los puntos marcan la foto actual.
+  <div data-carrusel class:list={['relative overflow-hidden', clase]}>
+    <div
+      data-carrusel-pista
+      role="region"
+      aria-roledescription="carrusel"
+      aria-label={`Fotos de ${nombre}`}
+      tabindex="0"
+      class="flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+    >
+      {fotos.map((foto, i) => (
+        <Image
+          src={foto}
+          alt={`Foto ${i + 1} de ${nombre}`}
+          {widths}
+          {sizes}
+          loading={carga(i)}
+          class={claseFoto}
+        />
+      ))}
+    </div>
+
+    {[
+      { accion: 'anterior', etiqueta: 'Foto anterior', lado: 'left-0' },
+      { accion: 'siguiente', etiqueta: 'Foto siguiente', lado: 'right-0' },
+    ].map((b) => (
+      <button
+        type="button"
+        hidden
+        data-carrusel-boton={b.accion}
+        aria-label={b.etiqueta}
+        class:list={[
+          'absolute top-1/2 flex size-11 -translate-y-1/2 cursor-pointer items-center justify-center',
+          b.lado,
+        ]}
+      >
+        <span class="flex size-8 items-center justify-center rounded-full bg-white/90 text-navy shadow-card transition-transform active:scale-90">
+          <Icon
+            name={b.accion === 'anterior' ? 'anterior' : 'siguiente'}
+            size={18}
+            strokeWidth={2.4}
+          />
+        </span>
+      </button>
+    ))}
+
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-x-0 bottom-2 flex justify-center gap-1.5"
+    >
+      {fotos.map((_, i) => (
+        <span
+          data-carrusel-punto
+          data-activo={i === 0 ? '' : undefined}
+          class="size-1.5 rounded-full bg-white/70 shadow-sm transition-[width,background-color] duration-200 data-activo:w-4 data-activo:bg-white"
+        />
+      ))}
+    </div>
+  </div>
+)}
+
+{fotos.length === 0 && (
+  <div
+    role="img"
+    aria-label={`${nombre} (foto próximamente)`}
+    class:list={[
+      'flex aspect-square flex-col items-center justify-center gap-1.5 bg-celeste-50 text-brand',
+      clase,
+    ]}
+  >
+    <Icon name="zapato" size={56} strokeWidth={1.3} class="opacity-55" />
+    <span class="font-mono text-[11px] text-muted">foto del par</span>
+  </div>
+)}
+
+<script>
+  // Flechas y puntos del carrusel de fotos. Astro incluye este script una sola vez
+  // aunque haya muchas tarjetas.
+  const suave = window.matchMedia('(prefers-reduced-motion: no-preference)');
+
+  document.querySelectorAll<HTMLElement>('[data-carrusel]').forEach((carrusel) => {
+    const pista = carrusel.querySelector<HTMLElement>('[data-carrusel-pista]');
+    const botones = carrusel.querySelectorAll<HTMLButtonElement>('[data-carrusel-boton]');
+    const puntos = carrusel.querySelectorAll<HTMLElement>('[data-carrusel-punto]');
+    if (!pista) return;
+    const total = pista.children.length;
+
+    const actual = () => Math.round(pista.scrollLeft / pista.clientWidth);
+
+    // Al pasar la última vuelve a la primera (y al revés)
+    const ir = (i: number) =>
+      pista.scrollTo({
+        left: ((i + total) % total) * pista.clientWidth,
+        behavior: suave.matches ? 'smooth' : 'auto',
+      });
+
+    botones.forEach((boton) => {
+      boton.hidden = false;
+      boton.addEventListener('click', () => {
+        ir(actual() + (boton.dataset.carruselBoton === 'anterior' ? -1 : 1));
+      });
+    });
+
+    pista.addEventListener(
+      'scroll',
+      () => {
+        const i = actual();
+        puntos.forEach((punto, j) => punto.toggleAttribute('data-activo', i === j));
+      },
+      { passive: true },
+    );
+  });
+</script>

@@ -1,4 +1,5 @@
 ---
+import type { ImageMetadata } from 'astro';
 import { Font, getImage } from 'astro:assets';
 import '../styles/global.css';
 import logo from '../assets/logo.jpg';
@@ -7,19 +8,38 @@ import { site } from '../data/site';
 interface Props {
   title?: string;
   description?: string;
+  /** Foto para la vista previa al compartir el link (por defecto, el logo) */
+  imagen?: ImageMetadata;
+  imagenAlt?: string;
+  tipo?: 'website' | 'product';
+  /** Con tipo "product": precio en pesos para las etiquetas product:price */
+  precio?: number;
+  /** Para páginas que no tienen que aparecer en buscadores (/panel, productos ocultos) */
+  noindex?: boolean;
 }
 
-const { title = `${site.nombre} | Calzado en Palpalá, Jujuy`, description = site.descripcion } =
-  Astro.props;
+const {
+  title = `${site.nombre} | Calzado en Palpalá, Jujuy`,
+  description = site.descripcion,
+  imagen = logo,
+  imagenAlt = `Logo de ${site.nombre}`,
+  tipo = 'website',
+  precio,
+  noindex = false,
+} = Astro.props;
 
-// Favicon, ícono de iOS e imagen para compartir en redes se generan desde el logo.
+// Favicon e ícono de iOS se generan desde el logo; la imagen para compartir en redes,
+// desde la foto del producto o el logo. Cuadrada en JPG (Facebook la muestra bien), de hasta
+// 1080 px y sin agrandar fotos más chicas, así las medidas declaradas son las reales.
+const ladoOg = Math.min(1080, imagen.width, imagen.height);
 const [favicon, appleIcon, ogImage] = await Promise.all([
   getImage({ src: logo, width: 32, height: 32, format: 'png' }),
   getImage({ src: logo, width: 180, height: 180, format: 'png' }),
-  getImage({ src: logo, width: 1080, height: 1080, format: 'jpg' }),
+  getImage({ src: imagen, width: ladoOg, height: ladoOg, fit: 'cover', format: 'jpg' }),
 ]);
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
+// Facebook y WhatsApp necesitan la URL absoluta de la imagen
 const ogImageUrl = new URL(ogImage.src, Astro.site);
 
 // Datos estructurados: ayudan a Google a mostrar el negocio con horario y teléfono.
@@ -65,6 +85,7 @@ const jsonLd = {
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
@@ -72,17 +93,28 @@ const jsonLd = {
     <link rel="apple-touch-icon" href={appleIcon.src} />
     <meta name="theme-color" content="#0d47a1" />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={tipo} />
     <meta property="og:locale" content="es_AR" />
     <meta property="og:site_name" content={site.nombre} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImageUrl} />
-    <meta property="og:image:width" content="1080" />
-    <meta property="og:image:height" content="1080" />
-    <meta property="og:image:alt" content={`Logo de ${site.nombre}`} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content={String(ladoOg)} />
+    <meta property="og:image:height" content={String(ladoOg)} />
+    <meta property="og:image:alt" content={imagenAlt} />
+    {tipo === 'product' && precio !== undefined && (
+      <>
+        <meta property="product:price:amount" content={String(precio)} />
+        <meta property="product:price:currency" content="ARS" />
+      </>
+    )}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={imagenAlt} />
 
     <Font cssVariable="--font-inter" preload={[{ weight: 400 }, { weight: 600 }]} />
     <Font cssVariable="--font-poppins" preload={[{ weight: 700 }]} />

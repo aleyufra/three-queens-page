@@ -1,0 +1,147 @@
+---
+// Página individual de cada producto. Es el link que se pega en los grupos de Facebook:
+// las etiquetas Open Graph (en BaseLayout) arman la tarjeta con foto y precio.
+import type { GetStaticPaths } from 'astro';
+import Boton from '../../components/Boton.astro';
+import Footer from '../../components/Footer.astro';
+import FotosProducto from '../../components/FotosProducto.astro';
+import Header from '../../components/Header.astro';
+import Icon from '../../components/Icon.astro';
+import { beneficios } from '../../data/contenido';
+import { site } from '../../data/site';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCatalogo, publicos, type Producto } from '../../lib/catalogo';
+import { formatCm, formatPrecio, whatsappProductoUrl, whatsappUrl } from '../../lib/format';
+import { textoTalles } from '../../lib/publicacion';
+
+// También los ocultos: así un link ya compartido no da error, avisa que no está disponible
+export const getStaticPaths = (async () => {
+  const { productos } = await getCatalogo({ incluirOcultos: true });
+  return productos.map((producto) => ({ params: { slug: producto.id }, props: { producto } }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  producto: Producto;
+}
+
+const { producto: p } = Astro.props;
+const disponible = p.visible;
+const precio = formatPrecio(p.precio);
+const talles = textoTalles(p.talles);
+const precioAnterior = p.precioAnterior && p.precioAnterior > p.precio ? p.precioAnterior : null;
+const etiqueta = p.publico ? `${p.categoria.nombre} · ${publicos[p.publico]}` : p.categoria.nombre;
+
+const title = disponible
+  ? `${p.nombre} | ${precio} | ${site.nombreCorto}`
+  : `${p.nombre} | ${site.nombreCorto}`;
+const description = disponible
+  ? [precio, `Talles ${talles}`, p.descripcion, 'Pagás al recibir', site.localidad]
+      .filter(Boolean)
+      .join(' · ')
+  : `Este modelo no está disponible por ahora. Mirá el catálogo de ${site.nombre}.`;
+---
+
+<BaseLayout
+  {title}
+  {description}
+  imagen={p.fotos[0]}
+  imagenAlt={`Foto de ${p.nombre}`}
+  tipo={disponible ? 'product' : 'website'}
+  precio={disponible ? p.precio : undefined}
+  noindex={!disponible}
+>
+  <Header />
+  <main class="container-page py-6 md:py-12">
+    <a
+      href="/#catalogo"
+      class="mb-4 inline-flex min-h-11 items-center gap-1 text-[15px] font-medium text-brand no-underline hover:underline"
+    >
+      <Icon name="anterior" size={18} strokeWidth={2.4} />
+      Ver todo el catálogo
+    </a>
+
+    <div class="grid gap-6 md:grid-cols-2 md:gap-10">
+      <FotosProducto
+        fotos={p.fotos}
+        nombre={p.nombre}
+        widths={[390, 600, 800, 1080]}
+        sizes="(min-width: 1200px) 560px, (min-width: 768px) 50vw, 100vw"
+        prioridad
+        class="rounded-2xl border border-line"
+      />
+
+      <div class="flex flex-col gap-4">
+        <span class="self-start rounded-full bg-lila-100 px-3 py-1 text-sm font-semibold">
+          {etiqueta}
+        </span>
+        <h1 class="font-display text-[1.75rem] leading-tight font-bold text-balance md:text-4xl">
+          {p.nombre}
+        </h1>
+
+        {disponible ? (
+          <>
+            <p class="flex flex-wrap items-baseline gap-x-3">
+              <span class="text-3xl font-semibold">{precio}</span>
+              {precioAnterior && (
+                <s class="text-lg text-muted">
+                  <span class="sr-only">Antes:</span>
+                  {formatPrecio(precioAnterior)}
+                </s>
+              )}
+            </p>
+            {p.descripcion && (
+              <p class="text-base leading-relaxed text-pretty text-muted">{p.descripcion}</p>
+            )}
+
+            <div>
+              <h2 class="mb-2 text-base font-semibold">Talles disponibles</h2>
+              <ul class="flex flex-wrap gap-2">
+                {p.talles.map(({ talle, plantillaCm }) => (
+                  <li class="flex min-w-14 flex-col items-center rounded-lg border border-celeste-200 bg-celeste-50 px-3 py-1.5">
+                    <span class="text-base font-semibold">{talle}</span>
+                    {plantillaCm && (
+                      <span class="text-xs text-muted">{formatCm(plantillaCm)} cm</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+              {p.talles.some((t) => t.plantillaCm) && (
+                <p class="mt-2 text-[13px] text-muted">
+                  Debajo de cada talle: largo de la plantilla.
+                </p>
+              )}
+            </div>
+
+            <Boton href={whatsappProductoUrl(p)} whatsapp tamano="lg" class="w-full md:w-auto">
+              Consultar por WhatsApp
+            </Boton>
+          </>
+        ) : (
+          <>
+            <p class="rounded-2xl bg-celeste-50 p-4 text-base leading-normal">
+              Este modelo no está disponible por ahora. Escribinos y te contamos qué hay parecido.
+            </p>
+            <Boton href={whatsappUrl()} whatsapp tamano="lg" class="w-full md:w-auto">
+              Consultar por WhatsApp
+            </Boton>
+          </>
+        )}
+
+        <ul class="mt-2 grid gap-3 border-t border-line pt-5">
+          {beneficios.map((b) => (
+            <li class="flex items-start gap-3">
+              <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-celeste-100 text-brand">
+                <Icon name={b.icono} size={20} />
+              </span>
+              <span class="text-[15px] leading-snug">
+                <strong class="font-semibold">{b.titulo}.</strong>{' '}
+                <span class="text-muted">{b.texto}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

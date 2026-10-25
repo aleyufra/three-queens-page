@@ -31,8 +31,9 @@ const porOrden = (a: { orden: number; nombre: string }, b: { orden: number; nomb
 /**
  * Categorías para el filtro y productos visibles, ya ordenados.
  * Productos: primero los destacados, después por `orden` y por nombre.
+ * Con `incluirOcultos` también vienen los que tienen "Mostrar en la página" apagado.
  */
-export async function getCatalogo() {
+export async function getCatalogo({ incluirOcultos = false } = {}) {
   const categorias: Categoria[] = (await getCollection('categorias'))
     .map(({ id, data }) => ({ id, ...data }))
     .sort(porOrden);
@@ -49,10 +50,10 @@ export async function getCatalogo() {
       }
       return { ...data, id, categoria };
     })
-    .filter((p) => p.visible)
+    .filter((p) => incluirOcultos || p.visible)
     .sort((a, b) => Number(b.destacado) - Number(a.destacado) || porOrden(a, b));
 
-  // "Otros" aparece en el filtro solo si algún producto visible quedó sin categoría
+  // "Otros" aparece en el filtro solo si algún producto listado quedó sin categoría
   if (!porId.has(otros.id) && productos.some((p) => p.categoria === otros)) {
     categorias.push(otros);
   }

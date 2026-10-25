@@ -1,8 +1,8 @@
 ---
-import { Image } from 'astro:assets';
 import { publicos, type Producto } from '../lib/catalogo';
 import { formatCm, formatPrecio, whatsappProductoUrl } from '../lib/format';
 import Boton from './Boton.astro';
+import FotosProducto from './FotosProducto.astro';
 import Icon from './Icon.astro';
 
 interface Props {
@@ -18,78 +18,15 @@ const medidos = p.talles.flatMap(({ talle, plantillaCm }) =>
   plantillaCm ? [{ talle, cm: plantillaCm }] : [],
 );
 const cms = medidos.map((m) => m.cm);
-const imagenProps = {
-  widths: [240, 360, 560],
-  sizes: '(min-width: 1024px) 280px, (min-width: 768px) 33vw, 50vw',
-  class: 'aspect-square w-full shrink-0 snap-center object-cover',
-};
 ---
 
 <article class="flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-card transition-[box-shadow,translate] duration-200 hover:-translate-y-0.5 hover:shadow-card-hover">
-  {p.fotos.length === 1 && <Image src={p.fotos[0]!} alt={`Foto de ${p.nombre}`} {...imagenProps} />}
-
-  {p.fotos.length > 1 && (
-    // Varias fotos: se pasan deslizando (scroll-snap de CSS, anda sin JavaScript).
-    // Con JS aparecen las flechas y los puntos marcan la foto actual.
-    <div data-carrusel class="relative">
-      <div
-        data-carrusel-pista
-        role="region"
-        aria-roledescription="carrusel"
-        aria-label={`Fotos de ${p.nombre}`}
-        tabindex="0"
-        class="flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
-        {p.fotos.map((foto, i) => (
-          <Image src={foto} alt={`Foto ${i + 1} de ${p.nombre}`} {...imagenProps} />
-        ))}
-      </div>
-
-      {[
-        { accion: 'anterior', etiqueta: 'Foto anterior', lado: 'left-0' },
-        { accion: 'siguiente', etiqueta: 'Foto siguiente', lado: 'right-0' },
-      ].map((b) => (
-        <button
-          type="button"
-          hidden
-          data-carrusel-boton={b.accion}
-          aria-label={b.etiqueta}
-          class:list={[
-            'absolute top-1/2 flex size-11 -translate-y-1/2 cursor-pointer items-center justify-center',
-            b.lado,
-          ]}
-        >
-          <span class="flex size-8 items-center justify-center rounded-full bg-white/90 text-navy shadow-card transition-transform active:scale-90">
-            <Icon name={b.accion === 'anterior' ? 'anterior' : 'siguiente'} size={18} strokeWidth={2.4} />
-          </span>
-        </button>
-      ))}
-
-      <div
-        aria-hidden="true"
-        class="pointer-events-none absolute inset-x-0 bottom-2 flex justify-center gap-1.5"
-      >
-        {p.fotos.map((_, i) => (
-          <span
-            data-carrusel-punto
-            data-activo={i === 0 ? '' : undefined}
-            class="size-1.5 rounded-full bg-white/70 shadow-sm transition-[width,background-color] duration-200 data-activo:w-4 data-activo:bg-white"
-          />
-        ))}
-      </div>
-    </div>
-  )}
-
-  {p.fotos.length === 0 && (
-    <div
-      role="img"
-      aria-label={`${p.nombre} (foto próximamente)`}
-      class="flex aspect-square flex-col items-center justify-center gap-1.5 bg-celeste-50 text-brand"
-    >
-      <Icon name="zapato" size={56} strokeWidth={1.3} class="opacity-55" />
-      <span class="font-mono text-[11px] text-muted">foto del par</span>
-    </div>
-  )}
+  <FotosProducto
+    fotos={p.fotos}
+    nombre={p.nombre}
+    widths={[240, 360, 560]}
+    sizes="(min-width: 1024px) 280px, (min-width: 768px) 33vw, 50vw"
+  />
 
   <div class="flex flex-1 flex-col gap-2 p-3 md:p-4">
     <div class="flex flex-wrap gap-1">
@@ -101,7 +38,9 @@ const imagenProps = {
       <span class="rounded-full bg-lila-100 px-2.5 py-0.5 text-xs font-semibold">{etiqueta}</span>
     </div>
     <h3 class="line-clamp-2 font-display text-[15px] leading-snug font-semibold md:text-[17px]">
-      {p.nombre}
+      <a href={`/producto/${p.id}/`} class="text-navy no-underline hover:underline">
+        {p.nombre}
+      </a>
     </h3>
     {p.descripcion && (
       <p class="line-clamp-2 text-[13px] leading-snug text-muted">{p.descripcion}</p>
@@ -166,42 +105,3 @@ const imagenProps = {
     </Boton>
   </div>
 </article>
-
-<script>
-  // Flechas y puntos del carrusel de fotos. Astro incluye este script una sola vez
-  // aunque haya muchas tarjetas.
-  const suave = window.matchMedia('(prefers-reduced-motion: no-preference)');
-
-  document.querySelectorAll<HTMLElement>('[data-carrusel]').forEach((carrusel) => {
-    const pista = carrusel.querySelector<HTMLElement>('[data-carrusel-pista]');
-    const botones = carrusel.querySelectorAll<HTMLButtonElement>('[data-carrusel-boton]');
-    const puntos = carrusel.querySelectorAll<HTMLElement>('[data-carrusel-punto]');
-    if (!pista) return;
-    const total = pista.children.length;
-
-    const actual = () => Math.round(pista.scrollLeft / pista.clientWidth);
-
-    // Al pasar la última vuelve a la primera (y al revés)
-    const ir = (i: number) =>
-      pista.scrollTo({
-        left: ((i + total) % total) * pista.clientWidth,
-        behavior: suave.matches ? 'smooth' : 'auto',
-      });
-
-    botones.forEach((boton) => {
-      boton.hidden = false;
-      boton.addEventListener('click', () => {
-        ir(actual() + (boton.dataset.carruselBoton === 'anterior' ? -1 : 1));
-      });
-    });
-
-    pista.addEventListener(
-      'scroll',
-      () => {
-        const i = actual();
-        puntos.forEach((punto, j) => punto.toggleAttribute('data-activo', i === j));
-      },
-      { passive: true },
-    );
-  });
-</script>
