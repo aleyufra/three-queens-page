@@ -1,7 +1,7 @@
 {
   "nombre": "Zapatilla Urbana",
   "categoria": "zapatillas",
-  "precio": 67,
+  "precio": 6767,
   "talles": [
     {
       "talle": 35
@@ -23,8 +23,7 @@
     }
   ],
   "fotos": [
-    "zapatilla-urbana-blanca.webp",
-    "imagen-pesada-test.webp"
+    "zapatilla-urbana-blanca.webp"
   ],
   "descripcion": "Blanca, muy blanca, gris tirando a blanca uwu",
   "destacado": false,
