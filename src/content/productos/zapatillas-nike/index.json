@@ -1,0 +1,21 @@
+{
+  "nombre": "Zapatillas Nike",
+  "categoria": "zapatillas",
+  "precio": 45800,
+  "publico": "unisex",
+  "talles": [
+    {
+      "talle": 39
+    },
+    {
+      "talle": 40
+    }
+  ],
+  "fotos": [
+    "zapatilla-nike.webp"
+  ],
+  "descripcion": "Blanco, Negro, Gris",
+  "destacado": false,
+  "visible": true,
+  "orden": 120
+}
