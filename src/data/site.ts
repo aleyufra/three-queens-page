@@ -9,14 +9,14 @@ export const site = {
 
   whatsapp: {
     // Formato internacional sin "+" ni espacios, como lo pide wa.me
-    numero: '5493884967506',
-    visible: '388 496-7506',
+    numero: '5493888560158',
+    visible: '388 856-0158',
     mensajeGeneral: 'Hola Guadalupe! Quiero consultar por calzados',
   },
 
   horarios: [
-    { dias: 'Lun a Vie', horas: '9–18 h' },
-    { dias: 'Sáb', horas: '9–13 h' },
+    { dias: 'Lun a Vie', horas: '9–20 h' },
+    { dias: 'Sáb', horas: '9–18 h' },
   ],
 
   entrega: 'Puntos de encuentro en Palpalá · Retiro en barrio General Savio',
@@ -24,7 +24,7 @@ export const site = {
   // Líneas fijas del texto que se copia desde /panel para los grupos de Facebook
   publicacion: {
     entrega: 'Entrega en punto de encuentro en Palpalá o retiro en B° General Savio',
-    pago: 'Pagás cuando lo tenés en la mano',
+    pago: 'Pagos por efectivo y transferencia',
   },
 
   mapa: {
@@ -36,8 +36,8 @@ export const site = {
   redes: {
     // Pegá acá los links completos, por ejemplo 'https://www.facebook.com/threequeenscalzados'.
     // Mientras estén vacíos, el ícono no se muestra en el footer.
-    facebook: '',
+    facebook: 'https://www.facebook.com/profile.php?id=100076186866069',
     // Por ejemplo 'https://www.instagram.com/threequeenscalzados'
-    instagram: '',
+    instagram: 'https://www.instagram.com/three_queens_2025/',
   },
 } as const;

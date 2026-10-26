@@ -1,6 +1,6 @@
 # Three Queens Calzados: landing / catálogo
 
-Landing estática para un emprendimiento de calzado de Palpalá (Jujuy, Argentina). Idioma del sitio: español rioplatense (`es-AR`, voseo). Se publica en Cloudflare Workers (static assets, `wrangler.jsonc`): https://three-queens-page.ale-yufra28.workers.dev
+Landing estática para un emprendimiento de calzado de Palpalá (Jujuy, Argentina). Idioma del sitio: español rioplatense (`es-AR`, voseo). Se publica en Cloudflare Workers (static assets, `wrangler.jsonc`): https://threequeenscalzados.pages.dev
 
 La dueña edita el catálogo desde `/admin` (Sveltia CMS, backend GitHub). Cada guardado es un commit en `main`, y Workers Builds reconstruye el sitio.
 

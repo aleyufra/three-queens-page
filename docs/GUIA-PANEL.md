@@ -4,7 +4,7 @@ Con el panel podés agregar, cambiar y ocultar productos, precios, fotos y categ
 
 ## Entrar al panel
 
-1. Abrí en el celular: **https://three-queens-page.ale-yufra28.workers.dev/admin/**
+1. Abrí en el celular: **https://threequeenscalzados.pages.dev/admin/**
 2. Tocá **Sign In with GitHub** y entrá con tu usuario y contraseña de GitHub.
 3. Consejo: en el menú del navegador elegí "Agregar a pantalla de inicio". Así te queda como una app.
 
@@ -77,7 +77,7 @@ Si pasaron más de 5 minutos y no ves el cambio, avisale a quien te ayuda con la
 
 Hay una página aparte que te ayuda a publicar tus productos en los grupos de compra y venta. No publica sola: vos elegís el grupo y pegás.
 
-1. Abrí en el celular: **https://three-queens-page.ale-yufra28.workers.dev/panel/**
+1. Abrí en el celular: **https://threequeenscalzados.pages.dev/panel/**
    Te conviene agregarla a la pantalla de inicio. No pide usuario ni contraseña.
 2. Si querés, tocá una categoría arriba (Zapatillas, Botas…) para ver solo esos productos.
 3. En el producto que querés publicar:

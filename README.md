@@ -64,7 +64,7 @@ Funciona en **Chrome o Edge**: Firefox no tiene la API que usa Sveltia para leer
 
 ## Publicación
 
-El sitio se publica en **Cloudflare Workers** (static assets) en https://three-queens-page.ale-yufra28.workers.dev, configurado en `wrangler.jsonc`. Es 100 % estático: `pnpm build` genera `dist/` y no hay adapter de Cloudflare.
+El sitio se publica en **Cloudflare Workers** (static assets) en https://threequeenscalzados.pages.dev, configurado en `wrangler.jsonc`. Es 100 % estático: `pnpm build` genera `dist/` y no hay adapter de Cloudflare.
 
 Para que los cambios del panel se publiquen solos, el Worker tiene que estar conectado al repositorio con **Workers Builds**: comando de build `pnpm build` y el comando de deploy que propone Cloudflare (`npx wrangler deploy`, que corre en sus servidores, no en el proyecto).
 

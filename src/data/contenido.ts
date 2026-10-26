@@ -16,7 +16,7 @@ export const beneficios: { icono: IconName; titulo: string; texto: string }[] = 
   {
     icono: 'zapato',
     titulo: 'Probalos sin compromiso',
-    texto: 'En nuestro domicilio en General Savio.',
+    texto: 'En nuestro domicilio en barrio Gral. Savio Palpalá.',
   },
 ];
 

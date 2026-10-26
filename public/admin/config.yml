@@ -11,11 +11,11 @@
 
 backend:
   name: github
-  repo: aleyufra/three-queens-page
+  repo: threequeens/threequeenscalzados
   branch: main
   # Worker de Cloudflare que hace el login con GitHub (Sveltia CMS Authenticator).
   # El client ID y el secret de la OAuth App viven en ese worker, nunca en este repo.
-  base_url: https://sveltia-cms-auth.ale-yufra28.workers.dev/
+  base_url: https://sveltia-cms--auth.luveliz1312.workers.dev/
   commit_messages:
     create: 'Panel: agregar {{collection}} "{{slug}}"'
     update: 'Panel: actualizar {{collection}} "{{slug}}"'
@@ -24,8 +24,8 @@ backend:
     deleteMedia: 'Panel: borrar foto "{{path}}"'
 
 app_title: Panel Three Queens
-site_url: https://three-queens-page.ale-yufra28.workers.dev
-display_url: https://three-queens-page.ale-yufra28.workers.dev
+site_url: https://threequeenscalzados.pages.dev/
+display_url: https://threequeenscalzados.pages.dev/
 
 # Carpeta general de fotos (Sveltia la exige). Las fotos de cada producto se guardan en la
 # carpeta del producto (ver la colección "productos"). public_folder empieza con /src para

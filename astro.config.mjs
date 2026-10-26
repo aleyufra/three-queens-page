@@ -7,7 +7,7 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   // URL publicada en Cloudflare Workers. La usan el sitemap y las etiquetas Open Graph.
-  site: 'https://three-queens-page.ale-yufra28.workers.dev',
+  site: 'https://threequeenscalzados.pages.dev',
   output: 'static',
 
   // Las fuentes se descargan en el build y se sirven desde el propio sitio.
