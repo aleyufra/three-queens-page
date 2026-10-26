@@ -4,7 +4,7 @@ export const site = {
   nombre: 'Three Queens Calzados',
   nombreCorto: 'Three Queens',
   descripcion:
-    'Calzado para toda la familia en Palpalá, Jujuy. Talle medido en centímetros, pago contra entrega y cambio de talle. Consultá por WhatsApp.',
+    'Calzado para toda la familia en Palpalá, Jujuy. Probalos sin compromiso en barrio General Savio y pagá contra entrega. Consultá por WhatsApp.',
   localidad: 'Palpalá, Jujuy',
 
   whatsapp: {

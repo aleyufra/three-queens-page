@@ -29,7 +29,7 @@ El panel está en inglés, pero todo lo que tenés que completar está en españ
    - **Nombre**: por ejemplo "Zapatilla urbana blanca".
    - **Categoría**: elegí una de la lista.
    - **Precio**: solo números, sin puntos. Por ejemplo `35000`. En la página se ve como $ 35.000.
-   - **Talles disponibles**: tocá **Add talle** una vez por cada talle que tenés. El largo de plantilla en cm es opcional.
+   - **Talles disponibles**: tocá **Add talle** una vez por cada talle que tenés.
    - **Fotos**: subí al menos una, directo de la galería o la cámara. No te preocupes por el tamaño: el panel las achica solo. La primera foto es la que se ve primero.
 3. Tocá **Save**.
 

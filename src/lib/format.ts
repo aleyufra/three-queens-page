@@ -10,9 +10,6 @@ const pesos = new Intl.NumberFormat('es-AR', {
 /** 35000 → "$ 35.000" */
 export const formatPrecio = (precio: number) => pesos.format(precio);
 
-/** 26.5 → "26,5" */
-export const formatCm = (cm: number) => cm.toLocaleString('es-AR');
-
 /** Link a wa.me con el mensaje ya escrito. */
 export const whatsappUrl = (mensaje: string = site.whatsapp.mensajeGeneral) =>
   `https://wa.me/${site.whatsapp.numero}?text=${encodeURIComponent(mensaje)}`;

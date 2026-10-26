@@ -11,7 +11,7 @@ import { beneficios } from '../../data/contenido';
 import { site } from '../../data/site';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCatalogo, publicos, type Producto } from '../../lib/catalogo';
-import { formatCm, formatPrecio, whatsappProductoUrl, whatsappUrl } from '../../lib/format';
+import { formatPrecio, whatsappProductoUrl, whatsappUrl } from '../../lib/format';
 import { textoTalles } from '../../lib/publicacion';
 
 // También los ocultos: así un link ya compartido no da error, avisa que no está disponible
@@ -96,20 +96,12 @@ const description = disponible
             <div>
               <h2 class="mb-2 text-base font-semibold">Talles disponibles</h2>
               <ul class="flex flex-wrap gap-2">
-                {p.talles.map(({ talle, plantillaCm }) => (
-                  <li class="flex min-w-14 flex-col items-center rounded-lg border border-celeste-200 bg-celeste-50 px-3 py-1.5">
-                    <span class="text-base font-semibold">{talle}</span>
-                    {plantillaCm && (
-                      <span class="text-xs text-muted">{formatCm(plantillaCm)} cm</span>
-                    )}
+                {p.talles.map(({ talle }) => (
+                  <li class="flex min-w-12 items-center justify-center rounded-lg border border-celeste-200 bg-celeste-50 px-3 py-1.5 text-base font-semibold">
+                    {talle}
                   </li>
                 ))}
               </ul>
-              {p.talles.some((t) => t.plantillaCm) && (
-                <p class="mt-2 text-[13px] text-muted">
-                  Debajo de cada talle: largo de la plantilla.
-                </p>
-              )}
             </div>
 
             <Boton href={whatsappProductoUrl(p)} whatsapp tamano="lg" class="w-full md:w-auto">

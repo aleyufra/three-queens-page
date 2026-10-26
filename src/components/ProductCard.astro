@@ -1,9 +1,8 @@
 ---
 import { publicos, type Producto } from '../lib/catalogo';
-import { formatCm, formatPrecio, whatsappProductoUrl } from '../lib/format';
+import { formatPrecio, whatsappProductoUrl } from '../lib/format';
 import Boton from './Boton.astro';
 import FotosProducto from './FotosProducto.astro';
-import Icon from './Icon.astro';
 
 interface Props {
   producto: Producto;
@@ -13,11 +12,6 @@ const { producto: p } = Astro.props;
 
 const etiqueta = p.publico ? `${p.categoria.nombre} · ${publicos[p.publico]}` : p.categoria.nombre;
 const precioAnterior = p.precioAnterior && p.precioAnterior > p.precio ? p.precioAnterior : null;
-// Solo los talles a los que se les cargó la medida de plantilla
-const medidos = p.talles.flatMap(({ talle, plantillaCm }) =>
-  plantillaCm ? [{ talle, cm: plantillaCm }] : [],
-);
-const cms = medidos.map((m) => m.cm);
 ---
 
 <article class="flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-card transition-[box-shadow,translate] duration-200 hover:-translate-y-0.5 hover:shadow-card-hover">
@@ -64,32 +58,6 @@ const cms = medidos.map((m) => m.cm);
         </li>
       ))}
     </ul>
-
-    {medidos.length === 1 && (
-      <p class="text-[13px] leading-snug text-muted">
-        Plantilla: {formatCm(medidos[0]!.cm)} cm (talle {medidos[0]!.talle})
-      </p>
-    )}
-    {medidos.length > 1 && (
-      <details class="group text-[13px] leading-snug text-muted">
-        <summary class="flex min-h-11 cursor-pointer list-none items-center gap-1.5 [&::-webkit-details-marker]:hidden">
-          Plantilla: {formatCm(Math.min(...cms))} a {formatCm(Math.max(...cms))} cm
-          <Icon
-            name="mas"
-            size={12}
-            strokeWidth={2.6}
-            class="text-brand transition-transform duration-200 group-open:rotate-45"
-          />
-        </summary>
-        <ul class="grid grid-cols-2 gap-x-3 pb-1">
-          {medidos.map((m) => (
-            <li>
-              Talle {m.talle}: {formatCm(m.cm)} cm
-            </li>
-          ))}
-        </ul>
-      </details>
-    )}
     <!-- <p class="flex items-center gap-1.5 text-[13px] font-medium">
       <Icon name="horma" size={16} class="text-brand" />
       Horma {p.horma}

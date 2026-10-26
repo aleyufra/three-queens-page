@@ -3,20 +3,28 @@ import type { IconName } from '../lib/icons';
 
 export const beneficios: { icono: IconName; titulo: string; texto: string }[] = [
   { icono: 'billete', titulo: 'Pago contra entrega', texto: 'Pagás al recibir.' },
-  { icono: 'regla', titulo: 'Talle medido en cm', texto: 'Sin adivinar tu número.' },
+  {
+    icono: 'whatsapp',
+    titulo: 'Atención por WhatsApp',
+    texto: 'Te ayudamos a elegir tu talle.',
+  },
   {
     icono: 'camion',
     titulo: 'Entrega o retiro',
     texto: 'Punto de encuentro en Palpalá o retiro en General Savio.',
   },
-  { icono: 'cambio', titulo: 'Cambio de talle', texto: 'Si no te queda, lo cambiamos.' },
+  {
+    icono: 'zapato',
+    titulo: 'Probalos sin compromiso',
+    texto: 'En nuestro domicilio en General Savio.',
+  },
 ];
 
 export const pasos: { titulo: string; texto: string }[] = [
   { titulo: 'Elegí tu par', texto: 'Mirá el catálogo y tocá "Lo quiero".' },
   {
     titulo: 'Coordinamos por WhatsApp',
-    texto: 'Te paso fotos reales, medidas y confirmamos tu talle.',
+    texto: 'Te paso fotos reales y confirmamos tu talle.',
   },
   {
     titulo: 'Lo recibís y pagás en el momento',
@@ -25,9 +33,9 @@ export const pasos: { titulo: string; texto: string }[] = [
 ];
 
 export const garantia = {
-  titulo: 'Te queda o lo cambiamos',
+  titulo: 'Probátelos sin compromiso',
   texto:
-    'Si el talle no te queda, lo cambiás sin costo acercándote a nuestro domicilio en barrio General Savio, Palpalá. También podemos coordinar el cambio en un punto de encuentro en Palpalá.',
+    'Vení a nuestro domicilio en barrio General Savio, Palpalá, y probate los pares que quieras antes de decidir. Si no te convencen, no pasa nada: no tenés que llevarte ninguno.',
 };
 
 export const preguntas: { pregunta: string; respuesta: string }[] = [
@@ -43,12 +51,12 @@ export const preguntas: { pregunta: string; respuesta: string }[] = [
   {
     pregunta: '¿Cómo sé qué talle pedir?',
     respuesta:
-      'Cada par tiene la medida de la plantilla en centímetros. Si tenés dudas, medí tu pie y te ayudamos a elegir.',
+      'Escribinos por WhatsApp y te ayudamos a elegir. Si preferís ir a lo seguro, vení a probártelos sin compromiso a nuestro domicilio en barrio General Savio.',
   },
   {
-    pregunta: '¿Puedo cambiar el talle?',
+    pregunta: '¿Me los puedo probar?',
     respuesta:
-      'Sí. Si no te queda, lo cambiás sin costo acercándote a General Savio, o coordinamos el cambio en un punto de encuentro en Palpalá.',
+      'Sí. Vení a nuestro domicilio en barrio General Savio, Palpalá, y probate los pares que quieras, sin compromiso de compra. No hacemos cambios después de la compra, por eso te recomendamos probártelos antes.',
   },
   {
     pregunta: '¿Los calzados son originales?',

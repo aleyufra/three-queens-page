@@ -134,14 +134,6 @@ collections:
             value_type: float
             min: 15
             max: 50
-          - name: plantillaCm
-            label: Largo de plantilla en cm (opcional)
-            widget: number
-            value_type: float
-            min: 5
-            max: 40
-            required: false
-            hint: 'Medida por dentro del calzado. Ej.: 24.5. Si no lo mediste, dejalo vacío.'
       # - name: horma
       #   label: Horma
       #   widget: select

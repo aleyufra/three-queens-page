@@ -53,7 +53,7 @@ src/
   layouts/      BaseLayout.astro: <head>, SEO, Open Graph, favicon y JSON-LD
   lib/
     catalogo.ts   getCatalogo(): categorías + productos visibles ordenados, tipos Producto/Categoria
-    format.ts     formatPrecio, formatCm, whatsappUrl, whatsappProductoUrl, horariosTexto
+    format.ts     formatPrecio, whatsappUrl, whatsappProductoUrl, horariosTexto
     publicacion.ts  urlProducto (absoluta), textoTalles, textoPublicacion, textoCompartir
     icons.ts      trazos SVG de los íconos + tipo IconName
   pages/

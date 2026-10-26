@@ -31,15 +31,7 @@ const productos = defineCollection({
       // nullish: el panel puede guardar null en un campo opcional vacío
       precioAnterior: z.number().positive().nullish(),
       publico: z.enum(['mujer', 'hombre', 'ninos', 'unisex']).nullish(),
-      talles: z
-        .array(
-          z.object({
-            talle: z.number(),
-            /** Largo de la plantilla en cm. Opcional: solo los talles que se midieron */
-            plantillaCm: z.number().positive().nullish(),
-          }),
-        )
-        .min(1),
+      talles: z.array(z.object({ talle: z.number() })).min(1),
       // horma: z.enum(['chica', 'normal', 'grande']),
       // El panel pide al menos 1 foto; acá se acepta vacío para que los productos
       // sin foto todavía muestren el placeholder.
