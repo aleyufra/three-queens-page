@@ -1,5 +1,5 @@
 ---
-import { getCatalogo } from '../lib/catalogo';
+import { getCatalogo, productosPorPagina } from '../lib/catalogo';
 import { whatsappUrl } from '../lib/format';
 import Boton from './Boton.astro';
 import Icon from './Icon.astro';
@@ -44,13 +44,28 @@ const filtros = [
 
     <p data-catalogo-estado aria-live="polite" class="sr-only"></p>
 
-    <ul data-catalogo-grilla class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
+    <ul
+      data-catalogo-grilla
+      data-por-pagina={productosPorPagina}
+      class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4"
+    >
       {productos.map((p) => (
         <li data-categoria={p.categoria.id}>
           <ProductCard producto={p} />
         </li>
       ))}
     </ul>
+
+    <!-- Paginado: lo arma el script. Sin JavaScript se ven todos los productos y esto no aparece -->
+    <nav
+      data-catalogo-paginas
+      aria-label="Páginas del catálogo"
+      hidden
+      class="mt-8 flex flex-col items-center gap-3"
+    >
+      <p data-catalogo-rango class="text-sm text-muted"></p>
+      <ul data-catalogo-botones class="flex flex-wrap items-center justify-center gap-1.5"></ul>
+    </nav>
 
     <div
       data-catalogo-vacio
@@ -80,25 +95,148 @@ const filtros = [
 </section>
 
 <script>
+  import { icons } from '../lib/icons';
+
+  // Filtro por categoría + paginado de a `data-por-pagina` productos.
+  const seccion = document.querySelector<HTMLElement>('#catalogo');
   const botones = document.querySelectorAll<HTMLButtonElement>('[data-filtro]');
-  const items = document.querySelectorAll<HTMLElement>('[data-categoria]');
+  const items = [...document.querySelectorAll<HTMLElement>('[data-categoria]')];
   const grilla = document.querySelector<HTMLElement>('[data-catalogo-grilla]');
   const vacio = document.querySelector<HTMLElement>('[data-catalogo-vacio]');
   const estado = document.querySelector<HTMLElement>('[data-catalogo-estado]');
+  const nav = document.querySelector<HTMLElement>('[data-catalogo-paginas]');
+  const rango = document.querySelector<HTMLElement>('[data-catalogo-rango]');
+  const lista = document.querySelector<HTMLElement>('[data-catalogo-botones]');
+  const porPagina = Number(grilla?.dataset.porPagina) || 12;
 
-  function filtrar(filtro: string) {
-    let visibles = 0;
-    items.forEach((item) => {
-      const mostrar = filtro === 'todos' || item.dataset.categoria === filtro;
-      item.hidden = !mostrar;
-      if (mostrar) visibles++;
-    });
-    botones.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filtro === filtro)));
-    if (grilla) grilla.hidden = visibles === 0;
-    if (vacio) vacio.hidden = visibles !== 0;
-    // Lo anuncia el lector de pantalla
-    if (estado) estado.textContent = `${visibles} ${visibles === 1 ? 'modelo' : 'modelos'}`;
+  let filtro = 'todos';
+  let pagina = 1;
+
+  const flecha = (nombre: 'anterior' | 'siguiente') =>
+    `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[nombre]}</svg>`;
+
+  // En celular entran menos botones en una fila
+  const ancho = window.matchMedia('(min-width: 640px)');
+
+  /**
+   * Con muchas páginas no se muestran todas: en celular "1 … 4 … 10",
+   * en pantallas más anchas "1 … 3 4 5 … 10".
+   */
+  function numeros(actual: number, total: number): (number | '…')[] {
+    const vecinas = ancho.matches ? 1 : 0;
+    if (total <= (ancho.matches ? 7 : 5)) return Array.from({ length: total }, (_, i) => i + 1);
+    const cerca: number[] = [];
+    for (let n = actual - vecinas; n <= actual + vecinas; n++) {
+      if (n > 1 && n < total) cerca.push(n);
+    }
+    // En la primera o la última página no hay "cerca": queda "1 … 10"
+    if (cerca.length === 0) return [1, '…', total];
+    const resultado: (number | '…')[] = [1];
+    if (cerca[0]! > 2) resultado.push('…');
+    resultado.push(...cerca);
+    if (cerca.at(-1)! < total - 1) resultado.push('…');
+    resultado.push(total);
+    return resultado;
   }
 
-  botones.forEach((b) => b.addEventListener('click', () => filtrar(b.dataset.filtro ?? 'todos')));
+  const claseBoton =
+    'flex min-h-11 min-w-11 cursor-pointer items-center justify-center gap-1 rounded-xl px-3 text-[15px] font-semibold transition-colors duration-200 disabled:cursor-default disabled:opacity-40';
+
+  function boton(
+    texto: string,
+    destino: number,
+    opciones: { etiqueta?: string; actual?: boolean; deshabilitado?: boolean } = {},
+  ) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.innerHTML = texto;
+    b.dataset.pagina = String(destino);
+    b.className = `${claseBoton} ${
+      opciones.actual
+        ? 'bg-brand text-white'
+        : 'bg-celeste-100 text-navy hover:bg-celeste-200 disabled:hover:bg-celeste-100'
+    }`;
+    if (opciones.etiqueta) b.setAttribute('aria-label', opciones.etiqueta);
+    if (opciones.actual) b.setAttribute('aria-current', 'page');
+    b.disabled = opciones.deshabilitado ?? false;
+    const li = document.createElement('li');
+    li.append(b);
+    return li;
+  }
+
+  function dibujarPaginas(total: number, cantidad: number) {
+    if (!nav || !lista || !rango) return;
+    nav.hidden = total <= 1;
+    if (total <= 1) return;
+
+    const desde = (pagina - 1) * porPagina + 1;
+    const hasta = Math.min(pagina * porPagina, cantidad);
+    rango.textContent = `Mostrando ${desde}–${hasta} de ${cantidad} modelos`;
+
+    lista.replaceChildren(
+      boton(`${flecha('anterior')}<span class="hidden sm:inline">Anterior</span>`, pagina - 1, {
+        etiqueta: 'Página anterior',
+        deshabilitado: pagina === 1,
+      }),
+      ...numeros(pagina, total).map((n) => {
+        if (n === '…') {
+          const li = document.createElement('li');
+          li.textContent = '…';
+          li.className = 'px-1 text-muted';
+          li.setAttribute('aria-hidden', 'true');
+          return li;
+        }
+        return boton(String(n), n, { etiqueta: `Página ${n}`, actual: n === pagina });
+      }),
+      boton(`<span class="hidden sm:inline">Siguiente</span>${flecha('siguiente')}`, pagina + 1, {
+        etiqueta: 'Página siguiente',
+        deshabilitado: pagina === total,
+      }),
+    );
+  }
+
+  function mostrar() {
+    const coinciden = items.filter(
+      (item) => filtro === 'todos' || item.dataset.categoria === filtro,
+    );
+    const total = Math.max(1, Math.ceil(coinciden.length / porPagina));
+    pagina = Math.min(Math.max(pagina, 1), total);
+
+    const inicio = (pagina - 1) * porPagina;
+    const enPagina = new Set(coinciden.slice(inicio, inicio + porPagina));
+    items.forEach((item) => (item.hidden = !enPagina.has(item)));
+
+    botones.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filtro === filtro)));
+    if (grilla) grilla.hidden = coinciden.length === 0;
+    if (vacio) vacio.hidden = coinciden.length !== 0;
+    dibujarPaginas(total, coinciden.length);
+
+    // Lo anuncia el lector de pantalla
+    if (estado) {
+      const modelos = `${coinciden.length} ${coinciden.length === 1 ? 'modelo' : 'modelos'}`;
+      estado.textContent = total > 1 ? `${modelos}, página ${pagina} de ${total}` : modelos;
+    }
+  }
+
+  botones.forEach((b) =>
+    b.addEventListener('click', () => {
+      filtro = b.dataset.filtro ?? 'todos';
+      pagina = 1;
+      mostrar();
+    }),
+  );
+
+  lista?.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-pagina]');
+    if (!b || b.disabled) return;
+    pagina = Number(b.dataset.pagina);
+    mostrar();
+    // Vuelve arriba del catálogo para empezar a ver la página nueva desde el principio
+    seccion?.scrollIntoView({ block: 'start' });
+    // Los botones se vuelven a dibujar: el foco pasa al primer producto de la página nueva
+    grilla?.querySelector<HTMLElement>('li:not([hidden]) h3 a')?.focus({ preventScroll: true });
+  });
+
+  ancho.addEventListener('change', mostrar);
+  mostrar();
 </script>

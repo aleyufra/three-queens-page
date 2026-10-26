@@ -22,6 +22,9 @@ export const publicos: Record<Publico, string> = {
   unisex: 'Unisex',
 };
 
+/** Cuántos productos muestra el catálogo por página (el resto se ve con los botones de abajo). */
+export const productosPorPagina = 12;
+
 /** Para productos cuya categoría ya no existe (la borraron o cambió el nombre del archivo). */
 const otros: Categoria = { id: 'otros', nombre: 'Otros', orden: Infinity };
 
