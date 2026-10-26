@@ -1,0 +1,22 @@
+{
+  "nombre": "Panchas Nike",
+  "categoria": "panchas",
+  "precio": 26000,
+  "precioAnterior": 30000,
+  "publico": "mujer",
+  "talles": [
+    {
+      "talle": 38
+    },
+    {
+      "talle": 36
+    }
+  ],
+  "fotos": [
+    "panchas-nike.webp"
+  ],
+  "descripcion": "rosa, floreado, negro",
+  "destacado": false,
+  "visible": true,
+  "orden": 130
+}
