@@ -45,8 +45,8 @@ export const preguntas: { pregunta: string; respuesta: string }[] = [
       'Coordinamos un punto de encuentro en Palpalá, o lo retirás en nuestro domicilio en barrio General Savio. No hacemos envíos a domicilio.',
   },
   {
-    pregunta: '¿Cómo pago?',
-    respuesta: 'Pagás cuando recibís el par, en efectivo o por transferencia/Mercado Pago.',
+    pregunta: '¿Cuales son las formas de pago?',
+    respuesta: 'Recibimos pagos tanto en efectivo o por transferencia/Mercado Pago.',
   },
   {
     pregunta: '¿Cómo sé qué talle pedir?',

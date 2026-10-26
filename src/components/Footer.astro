@@ -23,7 +23,7 @@ const links = [
 ---
 
 <!-- El pb-24 en celular deja lugar para el botón flotante de WhatsApp -->
-<footer class="bg-brand text-white [&_:focus-visible]:outline-white">
+<footer class="bg-blue-950 text-white [&_:focus-visible]:outline-white">
   <div class="container-page grid gap-7 pt-10 pb-24 md:grid-cols-3 md:pb-8">
     <div class="flex items-center gap-3">
       <Image
@@ -64,8 +64,8 @@ const links = [
     </div>
 
     <p class="border-t border-footer-line pt-5 text-sm text-footer-muted md:col-span-3">
-      © {new Date().getFullYear()}
-      {site.nombre}
+      © {new Date().getFullYear() + " "}
+      {site.nombre} <span class="text-gray-400">- Desarrollado por AleYufra</span>
     </p>
   </div>
 </footer>
