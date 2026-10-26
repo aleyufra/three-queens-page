@@ -21,7 +21,7 @@ export const beneficios: { icono: IconName; titulo: string; texto: string }[] = 
 ];
 
 export const pasos: { titulo: string; texto: string }[] = [
-  { titulo: 'Elegí tu par', texto: 'Mirá el catálogo y tocá "Lo quiero".' },
+  { titulo: 'Elegí tu par', texto: 'Mirá el catálogo y tocá "Ver detalles".' },
   {
     titulo: 'Coordinamos por WhatsApp',
     texto: 'Te paso fotos reales y confirmamos tu talle.',
@@ -65,6 +65,6 @@ export const preguntas: { pregunta: string; respuesta: string }[] = [
   },
   {
     pregunta: '¿Qué días atienden?',
-    respuesta: 'Lunes a viernes de 9 a 18 h y sábados de 9 a 13 h.',
+    respuesta: 'Lunes a viernes de 9 a 20 h y sábados de 9 a 18 h.',
   },
 ];

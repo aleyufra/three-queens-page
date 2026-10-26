@@ -1,6 +1,6 @@
 ---
 import { publicos, type Producto } from '../lib/catalogo';
-import { formatPrecio, whatsappProductoUrl } from '../lib/format';
+import { formatPrecio } from '../lib/format';
 import Boton from './Boton.astro';
 import FotosProducto from './FotosProducto.astro';
 
@@ -12,6 +12,7 @@ const { producto: p } = Astro.props;
 
 const etiqueta = p.publico ? `${p.categoria.nombre} · ${publicos[p.publico]}` : p.categoria.nombre;
 const precioAnterior = p.precioAnterior && p.precioAnterior > p.precio ? p.precioAnterior : null;
+const url = `/producto/${p.id}/`;
 ---
 
 <article class="flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-card transition-[box-shadow,translate] duration-200 hover:-translate-y-0.5 hover:shadow-card-hover">
@@ -32,7 +33,7 @@ const precioAnterior = p.precioAnterior && p.precioAnterior > p.precio ? p.preci
       <span class="rounded-full bg-lila-100 px-2.5 py-0.5 text-xs font-semibold">{etiqueta}</span>
     </div>
     <h3 class="line-clamp-2 font-display text-[15px] leading-snug font-semibold md:text-[17px]">
-      <a href={`/producto/${p.id}/`} class="text-navy no-underline hover:underline">
+      <a href={url} class="text-navy no-underline hover:underline">
         {p.nombre}
       </a>
     </h3>
@@ -63,13 +64,9 @@ const precioAnterior = p.precioAnterior && p.precioAnterior > p.precio ? p.preci
       Horma {p.horma}
     </p> -->
 
-    <Boton
-      href={whatsappProductoUrl(p)}
-      whatsapp
-      class="mt-auto px-3"
-      aria-label={`Lo quiero: ${p.nombre}`}
-    >
-      Lo quiero
+    <!-- El botón de WhatsApp está en la página del producto -->
+    <Boton href={url} class="mt-auto px-3" aria-label={`Ver detalles: ${p.nombre}`}>
+      Ver detalles
     </Boton>
   </div>
 </article>
